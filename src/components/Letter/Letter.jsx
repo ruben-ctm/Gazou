@@ -1,49 +1,50 @@
 import { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 import { letterText } from '../../data/content';
 import ContinueButton from '../ContinueButton/ContinueButton';
 import styles from './Letter.module.css';
 
-const WORDS = letterText.split(/(\s+)/);
+// Split text into paragraphs, then into words per paragraph
+const PARAGRAPHS = letterText.split('\n').filter(line => line.trim() !== '');
 
-function TypewriterWord({ word, index, scrollProgress }) {
-  const start = index / WORDS.length;
-  const end = start + 0.02;
-  const opacity = useTransform(scrollProgress, [start, end], [0, 1]);
-  const y = useTransform(scrollProgress, [start, end], [8, 0]);
-  const isSpace = /^\s+$/.test(word);
-  if (isSpace) return <span style={{ whiteSpace: 'pre' }}>{word}</span>;
-  return (
-    <motion.span style={{ opacity, y, display: 'inline-block' }}>
-      {word}
-    </motion.span>
-  );
-}
+// Flat list of all words with their paragraph index
+const ALL_WORDS = PARAGRAPHS.flatMap((para, pIdx) =>
+  para.split(' ').map((word, wIdx) => ({ word, pIdx, wIdx, key: `${pIdx}-${wIdx}` }))
+);
+
+const WORDS_PER_SECOND = 12; // speed of the typewriter
 
 export default function Letter({ onContinue }) {
   const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  });
+  const isInView = useInView(sectionRef, { once: true, margin: '-80px' });
+  const [visibleCount, setVisibleCount] = useState(0);
+  const intervalRef = useRef(null);
 
-  // Remap scroll so letter starts gently and ends near the bottom
-  const letterProgress = useTransform(scrollYProgress, [0.05, 0.85], [0, 1]);
+  useEffect(() => {
+    if (!isInView) return;
+    if (intervalRef.current) return; // already started
+
+    let count = 0;
+    intervalRef.current = setInterval(() => {
+      count += 1;
+      setVisibleCount(count);
+      if (count >= ALL_WORDS.length) {
+        clearInterval(intervalRef.current);
+      }
+    }, 1000 / WORDS_PER_SECOND);
+
+    return () => clearInterval(intervalRef.current);
+  }, [isInView]);
 
   return (
-    <section
-      id="letter"
-      ref={sectionRef}
-      className={`section ${styles.letterSection}`}
-      style={{ minHeight: '500vh' }}
-    >
+    <section id="letter" ref={sectionRef} className={`section ${styles.letterSection}`}>
       <div className={styles.letterWrap}>
-        {/* Decorative envelope top */}
+
+        {/* Wax seal */}
         <motion.div
           className={styles.envelopeTop}
           initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
           <div className={styles.waxSeal}>
@@ -51,62 +52,74 @@ export default function Letter({ onContinue }) {
           </div>
         </motion.div>
 
-        {/* Letter heading */}
+        {/* Heading */}
         <motion.div
           className={styles.letterHead}
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.3 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 1, delay: 0.4 }}
         >
           <h2 className="section-title">La Lettre Finale</h2>
           <p className="section-subtitle">À lire lentement, comme on vivrait les choses...</p>
           <div className="gold-divider" />
         </motion.div>
 
-        {/* The letter paper */}
+        {/* Paper */}
         <motion.div
           className={styles.paper}
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, delay: 0.2 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.9, delay: 0.6 }}
         >
-          {/* Paper lines decoration */}
-          {[...Array(20)].map((_, i) => (
-            <div key={i} className={styles.paperLine} style={{ top: `${3 + i * 4.2}rem` }} />
+          {/* Ruled lines */}
+          {[...Array(30)].map((_, i) => (
+            <div key={i} className={styles.paperLine} style={{ top: `${3 + i * 3.6}rem` }} />
           ))}
 
           <div className={styles.letterContent}>
-            <p className={styles.letterBody}>
-              {WORDS.map((word, i) => (
-                <TypewriterWord
-                  key={i}
-                  word={word}
-                  index={i}
-                  scrollProgress={letterProgress}
-                />
-              ))}
-            </p>
+            {PARAGRAPHS.map((para, pIdx) => {
+              const wordsInPara = para.split(' ');
+              // Count how many words of this para are visible
+              const wordsBeforeThisPara = ALL_WORDS.filter(w => w.pIdx < pIdx).length;
+
+              return (
+                <p key={pIdx} className={styles.letterParagraph}>
+                  {wordsInPara.map((word, wIdx) => {
+                    const globalIdx = wordsBeforeThisPara + wIdx;
+                    const visible = globalIdx < visibleCount;
+                    return (
+                      <motion.span
+                        key={wIdx}
+                        className={styles.word}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={visible ? { opacity: 1, y: 0 } : {}}
+                        transition={{ duration: 0.3 }}
+                      >
+                        {word}{' '}
+                      </motion.span>
+                    );
+                  })}
+                </p>
+              );
+            })}
           </div>
         </motion.div>
 
-        {/* Signature decoration */}
+        {/* Signature — appears after all words */}
         <motion.div
           className={styles.signatureArea}
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.5 }}
+          animate={visibleCount >= ALL_WORDS.length ? { opacity: 1 } : {}}
+          transition={{ duration: 1 }}
         >
           <p className={styles.signatureText}>— Ruben, avec tout son amour 💛</p>
         </motion.div>
 
+        {/* Continue button — appears after signature */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={visibleCount >= ALL_WORDS.length ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.6 }}
         >
           <ContinueButton
             onClick={onContinue}
@@ -114,7 +127,9 @@ export default function Letter({ onContinue }) {
             hint="✨ Le meilleur est pour la fin..."
           />
         </motion.div>
+
       </div>
     </section>
   );
 }
+

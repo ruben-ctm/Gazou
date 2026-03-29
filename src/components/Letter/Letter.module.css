@@ -1,9 +1,9 @@
 .letterSection {
   background: linear-gradient(180deg, var(--cream) 0%, #f8f0e8 100%);
   align-items: center;
-  justify-content: flex-start;
-  padding-top: 0;
-  padding-bottom: 0;
+  justify-content: center;
+  padding: 5rem clamp(1rem, 5vw, 3rem);
+  min-height: 100vh;
 }
 
 .letterWrap {
@@ -12,11 +12,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
-  position: sticky;
-  top: 50%;
-  transform: translateY(-50%);
-  padding: 2rem 1rem;
+  gap: 1.5rem;
 }
 
 /* Wax seal / envelope */
@@ -67,17 +63,16 @@
     0 4px 6px rgba(0,0,0,0.05),
     0 10px 40px rgba(100,60,30,0.1),
     inset 0 0 0 1px rgba(200,180,140,0.3);
-  padding: 3rem 3.5rem;
+  padding: clamp(1.5rem, 5vw, 3rem) clamp(1.25rem, 5vw, 3.5rem);
   position: relative;
-  overflow: visible;
-  min-height: 300px;
+  overflow: hidden;
 }
 
 /* Left margin line */
 .paper::before {
   content: '';
   position: absolute;
-  left: 60px;
+  left: clamp(30px, 8vw, 60px);
   top: 0;
   bottom: 0;
   width: 1px;
@@ -95,27 +90,34 @@
 }
 
 /* Letter content */
-.letterContent { position: relative; z-index: 1; }
+.letterContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
 
-.letterBody {
+/* Each paragraph */
+.letterParagraph {
   font-family: 'Dancing Script', cursive;
-  font-size: clamp(1.05rem, 2.5vw, 1.2rem);
-  line-height: 2.1;
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  line-height: 2;
   color: var(--velvet);
-  white-space: pre-wrap;
+  min-height: 1.2em;
+}
+
+/* Each word */
+.word {
+  display: inline;
 }
 
 /* Signature */
-.signatureArea { text-align: right; width: 100%; padding-right: 1rem; }
+.signatureArea { text-align: right; width: 100%; padding-right: 0.5rem; }
 
 .signatureText {
   font-family: 'Dancing Script', cursive;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: var(--dusty-rose);
 }
 
-/* Mobile */
-@media (max-width: 600px) {
-  .paper { padding: 2rem 1.5rem; }
-  .paper::before { left: 40px; }
-}
