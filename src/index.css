@@ -53,7 +53,9 @@ body.theme-pink {
 }
 
 /* ---- RESET & BASE ----------------------------------------- */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -73,9 +75,18 @@ body {
 }
 
 /* Hide scrollbar but keep scroll */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--cream); }
-::-webkit-scrollbar-thumb { background: var(--blush); border-radius: 10px; }
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--blush);
+  border-radius: 10px;
+}
 
 /* ---- UTILITIES -------------------------------------------- */
 .section {
@@ -119,7 +130,7 @@ body {
   pointer-events: none;
   z-index: 9999;
   font-size: 2rem;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.2));
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.2));
   animation: stickerPop 0.5s var(--ease-spring) forwards;
 }
 
@@ -139,14 +150,32 @@ body {
 }
 
 @keyframes stickerPop {
-  0% { transform: scale(0) rotate(-20deg); opacity: 0; }
-  70% { transform: scale(1.3) rotate(10deg); opacity: 1; }
-  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  0% {
+    transform: scale(0) rotate(-20deg);
+    opacity: 0;
+  }
+
+  70% {
+    transform: scale(1.3) rotate(10deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ---- BUTTONS ---------------------------------------------- */
@@ -170,7 +199,9 @@ body {
   box-shadow: 0 8px 30px rgba(212, 168, 67, 0.5);
 }
 
-.btn-primary:active { transform: translateY(0) scale(0.98); }
+.btn-primary:active {
+  transform: translateY(0) scale(0.98);
+}
 
 /* ---- INPUT FIELD ------------------------------------------ */
 .secret-input {
@@ -208,11 +239,27 @@ body {
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-10px); }
-  40% { transform: translateX(10px); }
-  60% { transform: translateX(-6px); }
-  80% { transform: translateX(6px); }
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20% {
+    transform: translateX(-10px);
+  }
+
+  40% {
+    transform: translateX(10px);
+  }
+
+  60% {
+    transform: translateX(-6px);
+  }
+
+  80% {
+    transform: translateX(6px);
+  }
 }
 
 /* ---- FLOATING PARTICLES ----------------------------------- */
@@ -225,13 +272,28 @@ body {
 }
 
 @keyframes floatUp {
-  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.6; }
-  90% { opacity: 0.6; }
-  100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 0.6;
+  }
+
+  90% {
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translateY(-10vh) rotate(720deg);
+    opacity: 0;
+  }
 }
 
 /* ---- RESPONSIVE ------------------------------------------- */
 @media (max-width: 768px) {
-  .section { padding: 3rem 1.25rem; }
+  .section {
+    padding: 3rem 1.25rem;
+  }
 }
