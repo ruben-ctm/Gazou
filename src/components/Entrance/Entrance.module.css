@@ -1,0 +1,165 @@
+.entranceWrap {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.velvetBg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, #3d0f20 0%, #1a0610 60%, #0d0308 100%);
+}
+
+/* Stars */
+.star {
+  position: absolute;
+  font-size: clamp(0.7rem, 1.5vw, 1rem);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Curtains */
+.curtain {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 52%;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  overflow: hidden;
+}
+
+.curtainLeft {
+  left: 0;
+  background: linear-gradient(to right, #6b1a2a, #8b2535, #7a1e2f, #5a1422);
+  box-shadow: inset -20px 0 40px rgba(0,0,0,0.4), 4px 0 20px rgba(0,0,0,0.5);
+}
+
+.curtainRight {
+  right: 0;
+  background: linear-gradient(to left, #6b1a2a, #8b2535, #7a1e2f, #5a1422);
+  box-shadow: inset 20px 0 40px rgba(0,0,0,0.4), -4px 0 20px rgba(0,0,0,0.5);
+}
+
+.curtainFold {
+  flex: 1;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  background: linear-gradient(to right, rgba(0,0,0,0.15) 0%, transparent 40%, rgba(0,0,0,0.1) 100%);
+}
+
+/* Gold bar at top */
+.goldBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 18px;
+  background: linear-gradient(to right, #8b6914, #d4a843, #f0d080, #d4a843, #8b6914);
+  z-index: 11;
+  box-shadow: 0 2px 20px rgba(212,168,67,0.6);
+}
+
+/* Center content */
+.centerContent {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 1rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+/* Golden plaque */
+.plaque {
+  background: linear-gradient(135deg, #c9a227, #e8c84a, #d4a843, #b8931e);
+  border-radius: 12px;
+  padding: 3px;
+  box-shadow: 0 0 40px rgba(212,168,67,0.5), 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.plaqueInner {
+  background: linear-gradient(160deg, #2d0c18 0%, #1a0610 100%);
+  border-radius: 10px;
+  padding: 1.8rem 2.5rem;
+  text-align: center;
+  border: 1px solid rgba(212,168,67,0.2);
+}
+
+.plaqueSmall {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  color: rgba(212,168,67,0.7);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+.plaqueName {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(2.5rem, 8vw, 3.5rem);
+  color: #d4a843;
+  line-height: 1;
+  text-shadow: 0 0 20px rgba(212,168,67,0.6);
+}
+
+.plaqueDivider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(212,168,67,0.6), transparent);
+  margin: 0.8rem auto;
+}
+
+.plaqueTagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.05em;
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.hint {
+  font-family: 'Cormorant Garamond', serif;
+  color: rgba(255,255,255,0.6);
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  font-style: italic;
+}
+
+.enterBtn {
+  margin-top: 0.25rem;
+  min-width: 160px;
+}
+
+.errorMsg {
+  font-family: 'Dancing Script', cursive;
+  color: #f4c6c6;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Flash effect */
+.flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  z-index: 50;
+  pointer-events: none;
+}

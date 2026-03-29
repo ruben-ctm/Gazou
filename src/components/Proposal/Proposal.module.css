@@ -1,0 +1,116 @@
+.proposalSection {
+  background: linear-gradient(160deg, #1a0610 0%, #2d0c18 40%, #1a0028 100%);
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  font-size: clamp(0.6rem, 1.5vw, 1rem);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  max-width: 700px;
+}
+
+.eyebrow {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.3em;
+  color: var(--gold-light);
+  text-transform: uppercase;
+}
+
+.question {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-style: italic;
+  color: white;
+  line-height: 1.3;
+  text-shadow: 0 2px 30px rgba(212,168,67,0.3);
+  white-space: pre-line;
+}
+
+.goldLine {
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  transform-origin: center;
+}
+
+.buttons {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.yesBtn1 {
+  background: linear-gradient(135deg, #d4a843, #f0d080, #d4a843);
+  font-size: 1.1rem;
+  padding: 1rem 2.5rem;
+  letter-spacing: 0.02em;
+}
+
+.yesBtn2 {
+  background: linear-gradient(135deg, #ff69b4, #ffb6c1, #ff69b4);
+  color: white;
+  font-size: 1.1rem;
+  padding: 1rem 2.5rem;
+  border: none;
+  border-radius: 50px;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255,105,180,0.5);
+  letter-spacing: 0.02em;
+}
+
+/* Answered state */
+.accepted { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; }
+
+.acceptedText {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2rem;
+  color: var(--gold-light);
+}
+
+.acceptedSub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: rgba(255,255,255,0.6);
+  font-size: 1rem;
+}
+
+/* NO button — small and sneaky */
+.noBtn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.25);
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 50;
+  transition: background 0.1s;
+  user-select: none;
+}
+
+.noBtn:hover {
+  background: rgba(255,255,255,0.08);
+}

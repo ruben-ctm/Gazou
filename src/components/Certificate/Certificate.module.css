@@ -1,0 +1,260 @@
+.certSection {
+  background: linear-gradient(180deg, #f8f0e8 0%, var(--cream) 100%);
+  min-height: 100vh;
+  padding: 5rem 1.25rem;
+}
+
+/* Certificate document */
+.certificate {
+  width: 100%;
+  max-width: 700px;
+  background: #fffdf8;
+  position: relative;
+  box-shadow:
+    0 10px 60px rgba(100,60,20,0.15),
+    0 2px 4px rgba(0,0,0,0.05);
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* Filigree corner decorations */
+.corner {
+  position: absolute;
+  font-size: 2rem;
+  color: var(--gold);
+  opacity: 0.6;
+  line-height: 1;
+  z-index: 10;
+}
+
+.tl { top: 8px; left: 10px; transform: rotate(0deg); }
+.tr { top: 8px; right: 10px; transform: rotate(90deg); }
+.bl { bottom: 8px; left: 10px; transform: rotate(270deg); }
+.br { bottom: 8px; right: 10px; transform: rotate(180deg); }
+
+/* Double border effect */
+.certBorderOuter {
+  margin: 16px;
+  border: 3px solid var(--gold);
+  padding: 4px;
+}
+
+.certBorderInner {
+  border: 1px solid rgba(212,168,67,0.4);
+  padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+/* Header */
+.certHeader {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Seal */
+.certSeal { display: flex; }
+
+.sealOuter {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    var(--gold) 0%, transparent 5%,
+    var(--gold) 10%, transparent 15%,
+    var(--gold) 20%, transparent 25%,
+    var(--gold) 30%, transparent 35%,
+    var(--gold) 40%, transparent 45%,
+    var(--gold) 50%, transparent 55%,
+    var(--gold) 60%, transparent 65%,
+    var(--gold) 70%, transparent 75%,
+    var(--gold) 80%, transparent 85%,
+    var(--gold) 90%, transparent 95%,
+    var(--gold) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(212,168,67,0.5);
+  flex-shrink: 0;
+}
+
+.sealInner {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #d4a843, #9a7020);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3), inset 0 -2px 0 rgba(0,0,0,0.2);
+}
+
+.sealText {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.4rem;
+  color: rgba(255,255,255,0.95);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.sealAmp {
+  font-family: 'Dancing Script', cursive;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 4px;
+}
+
+.certPre {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.certTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  color: var(--velvet);
+  font-style: italic;
+  line-height: 1.2;
+}
+
+/* Dividers */
+.certDivider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
+  margin: 1.25rem 0;
+  position: relative;
+}
+
+.certDivider::before {
+  content: '✦';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fffdf8;
+  padding: 0 0.5rem;
+  color: var(--gold);
+  font-size: 0.75rem;
+}
+
+/* Body */
+.certBody { width: 100%; }
+
+.certPreamble {
+  font-size: 1rem;
+  line-height: 1.9;
+  color: var(--text-dark);
+  text-align: justify;
+  margin-bottom: 1.25rem;
+}
+
+.certArticles { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
+
+.article {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.articleNum {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+  padding-top: 2px;
+  min-width: 70px;
+}
+
+.articleText {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-dark);
+  text-align: justify;
+}
+
+/* Signature */
+.sigRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin: 1rem 0;
+}
+
+.sigField { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
+
+.sigLabel {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--velvet);
+  text-align: center;
+}
+
+.sigCanvas {
+  width: 100%;
+  max-width: 300px;
+  height: 100px;
+  border: none;
+  cursor: crosshair;
+  touch-action: none;
+  background: transparent;
+}
+
+.sigLine {
+  width: 90%;
+  height: 1px;
+  background: var(--text-dark);
+  opacity: 0.3;
+}
+
+.sigHint {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  text-align: center;
+}
+
+.clearBtn {
+  background: none;
+  border: 1px solid var(--blush);
+  border-radius: 6px;
+  padding: 0.2rem 0.6rem;
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clearBtn:hover { background: var(--blush); color: var(--velvet); }
+
+.certFooter {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+/* Export button */
+.exportBtn {
+  font-size: 1rem;
+  padding: 1rem 2.5rem;
+}
+
+/* Mobile */
+@media (max-width: 500px) {
+  .certHeader { flex-direction: column; text-align: center; }
+  .sigRow { grid-template-columns: 1fr; }
+}

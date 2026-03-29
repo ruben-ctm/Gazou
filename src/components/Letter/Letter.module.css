@@ -1,0 +1,121 @@
+.letterSection {
+  background: linear-gradient(180deg, var(--cream) 0%, #f8f0e8 100%);
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.letterWrap {
+  width: 100%;
+  max-width: 680px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  position: sticky;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 2rem 1rem;
+}
+
+/* Wax seal / envelope */
+.envelopeTop {
+  display: flex;
+  justify-content: center;
+}
+
+.waxSeal {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #c0392b, #922b21, #641e16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 4px 20px rgba(150,30,30,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.2),
+    inset 0 -2px 0 rgba(0,0,0,0.2);
+  position: relative;
+}
+
+.waxSeal::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.sealInitials {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.8rem;
+  color: rgba(255,255,255,0.9);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* Letter head */
+.letterHead { text-align: center; width: 100%; }
+
+/* Paper */
+.paper {
+  width: 100%;
+  background: #fffdf8;
+  border-radius: 12px;
+  box-shadow:
+    0 4px 6px rgba(0,0,0,0.05),
+    0 10px 40px rgba(100,60,30,0.1),
+    inset 0 0 0 1px rgba(200,180,140,0.3);
+  padding: 3rem 3.5rem;
+  position: relative;
+  overflow: visible;
+  min-height: 300px;
+}
+
+/* Left margin line */
+.paper::before {
+  content: '';
+  position: absolute;
+  left: 60px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(200,150,150,0.25);
+}
+
+/* Horizontal ruled lines */
+.paperLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(180,160,130,0.15);
+  pointer-events: none;
+}
+
+/* Letter content */
+.letterContent { position: relative; z-index: 1; }
+
+.letterBody {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+  line-height: 2.1;
+  color: var(--velvet);
+  white-space: pre-wrap;
+}
+
+/* Signature */
+.signatureArea { text-align: right; width: 100%; padding-right: 1rem; }
+
+.signatureText {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.3rem;
+  color: var(--dusty-rose);
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .paper { padding: 2rem 1.5rem; }
+  .paper::before { left: 40px; }
+}

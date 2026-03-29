@@ -1,0 +1,347 @@
+.originalsSection {
+  background: #0a0a0f;
+  min-height: auto;
+  padding: 0;
+  align-items: stretch;
+  justify-content: flex-start;
+  color: white;
+}
+
+/* Top bar */
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 3rem;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logoArea {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logoR {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-style: italic;
+  color: var(--gold);
+  text-shadow: 0 0 20px rgba(212,168,67,0.6);
+  line-height: 1;
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+}
+
+.logoMain {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  color: white;
+}
+
+.logoSub {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--gold-light);
+}
+
+.topBarRight { font-family: var(--font-elegant); font-size: 0.85rem; color: rgba(255,255,255,0.5); }
+.topBarTag { font-style: italic; }
+
+/* Hero banner */
+.heroBanner {
+  position: relative;
+  min-height: 55vh;
+  display: flex;
+  align-items: flex-end;
+  padding: 4rem 3rem;
+  background: 
+    linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%),
+    linear-gradient(135deg, #2d0c18 0%, #1a0028 50%, #0a0a20 100%);
+  margin-bottom: 2rem;
+}
+
+.heroContent { max-width: 500px; }
+
+.heroTag {
+  font-family: var(--font-elegant);
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.heroTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-style: italic;
+  color: white;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+.heroDesc {
+  font-family: var(--font-elegant);
+  font-size: 1rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.heroBtns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+/* Categories */
+.categories {
+  padding: 0 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.category { margin-bottom: 0; }
+
+.catTitle {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 1rem;
+  padding-left: 0.25rem;
+}
+
+.filmRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+/* Film card */
+.filmCard {
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.thumbnail {
+  aspect-ratio: 16/9;
+  position: relative;
+  background: #1a1a2e;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.thumbImg { width: 100%; height: 100%; object-fit: cover; }
+
+.thumbPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: linear-gradient(135deg, #2d0c18, #1a0028);
+  font-family: var(--font-elegant);
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+}
+
+.thumbPlaceholder span { font-size: 2rem; }
+
+.thumbOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.playCircle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: white;
+}
+
+.thumbTitle {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  color: white;
+  text-align: center;
+  padding: 0 0.5rem;
+}
+
+.thumbDuration {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.durationBadge {
+  position: absolute;
+  bottom: 4px;
+  right: 6px;
+  background: rgba(0,0,0,0.8);
+  color: rgba(255,255,255,0.8);
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.filmCardInfo { padding: 0.5rem 0.25rem; }
+
+.filmCardTitle {
+  font-family: var(--font-elegant);
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.filmCardSub {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.4);
+  font-family: var(--font-body);
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modalContent {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Film frame */
+.filmFrame {
+  background: #1a1a1a;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 10px 60px rgba(0,0,0,0.8);
+}
+
+.filmPerf {
+  background: #111;
+  display: flex;
+  gap: 12px;
+  padding: 6px 12px;
+  justify-content: center;
+}
+
+.filmHole {
+  width: 16px;
+  height: 10px;
+  border-radius: 3px;
+  background: #333;
+  border: 1px solid #444;
+}
+
+.filmScreen { aspect-ratio: 16/9; overflow: hidden; }
+
+.video { width: 100%; height: 100%; object-fit: contain; background: black; }
+
+.videoPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1a0028, #2d0c18);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.projectorIcon { font-size: 3.5rem; }
+
+.vpTitle {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.vpSub {
+  font-family: var(--font-elegant);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+}
+
+.vpPath {
+  background: rgba(255,255,255,0.1);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--gold-light);
+}
+
+/* Film info */
+.filmInfo {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filmDirectorTag {
+  font-family: var(--font-elegant);
+  font-style: italic;
+  color: var(--gold-light);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+}
+
+.filmModalTitle {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-style: italic;
+  color: white;
+}
+
+.filmModalDesc {
+  font-family: var(--font-elegant);
+  color: rgba(255,255,255,0.7);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 500px;
+  margin-bottom: 0.5rem;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .topBar, .heroBanner, .categories { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .filmRow { grid-template-columns: repeat(2, 1fr); }
+}
