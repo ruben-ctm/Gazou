@@ -7,7 +7,9 @@ import styles from './ContinueButton.module.css';
  * @param {string}   hint    - petite ligne de texte sous le bouton (optionnel)
  * @param {string}   label   - texte du bouton (défaut : "Continuer")
  */
-export default function ContinueButton({ onClick, hint, label = 'Continuer' }) {
+export default function ContinueButton({ onClick, hint, label = 'Continuer', theme = 'default' }) {
+  const themeClass = styles[`theme_${theme}`] || styles.theme_default;
+
   return (
     <motion.div
       className={styles.continueWrap}
@@ -15,7 +17,7 @@ export default function ContinueButton({ onClick, hint, label = 'Continuer' }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      <button className={styles.continueBtn} onClick={onClick}>
+      <button className={`${styles.continueBtn} ${themeClass}`} onClick={onClick}>
         {label}
         <span className={styles.arrow}>→</span>
       </button>

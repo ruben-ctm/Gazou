@@ -173,13 +173,21 @@ export default function Originals({ onContinue }) {
           <motion.div 
             className={styles.netflixIntroOverlay}
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.8 } }}
+            exit={{ opacity: 0, transition: { duration: 0.2 } }}
           >
              <motion.div
                className={styles.netflixN}
-               initial={{ scale: 2.5, opacity: 0 }}
-               animate={{ scale: 1, opacity: 1 }}
-               transition={{ duration: 1.2, ease: "easeOut" }}
+               initial={{ scale: 3, opacity: 0, filter: 'blur(10px)' }}
+               animate={{ 
+                 scale: [3, 1, 1, 20], 
+                 opacity: [0, 1, 1, 0],
+                 filter: ['blur(10px)', 'blur(0px)', 'blur(0px)', 'blur(10px)']
+               }}
+               transition={{ 
+                 duration: 2.4, 
+                 times: [0, 0.15, 0.7, 1], 
+                 ease: "easeInOut"
+               }}
              >
                R
              </motion.div>
@@ -263,6 +271,7 @@ export default function Originals({ onContinue }) {
         <ContinueButton
           onClick={onContinue}
           hint="Une lettre t'attend..."
+          theme="netflix"
         />
       </div>
     </section>

@@ -163,3 +163,70 @@
   z-index: 50;
   pointer-events: none;
 }
+
+/* Audio Modal */
+.audioModalOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.audioModal {
+  background: linear-gradient(145deg, #2d0c18, #1a0610);
+  border: 1px solid rgba(212,168,67,0.3);
+  padding: 3rem 2rem;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.audioIcon {
+  font-size: 3.5rem;
+  margin-bottom: -0.5rem;
+}
+
+.audioTitle {
+  font-family: 'Cormorant Garamond', serif;
+  color: #d4a843;
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.audioText {
+  font-family: 'Inter', sans-serif;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.audioBtn {
+  background: linear-gradient(to right, #d4a843, #f0d080, #d4a843);
+  color: #1a0610;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(212,168,67,0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.05em;
+}
+
+.audioBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(212,168,67,0.6);
+}

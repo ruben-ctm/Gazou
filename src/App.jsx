@@ -20,8 +20,36 @@ function App() {
   const [currentSection, setCurrentSection] = useState(0); // index dans SECTIONS
   const [proposalAccepted, setProposalAccepted] = useState(false);
   const [pinkTheme, setPinkTheme] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [kawaiiEvent, setKawaiiEvent] = useState(null);
   const sectionRefs = useRef({});
+
+  useEffect(() => {
+    const saved = localStorage.getItem('gazouProgress');
+    if (saved) {
+      try {
+        const state = JSON.parse(saved);
+        if (state.unlocked) setUnlocked(true);
+        if (state.currentSection) setCurrentSection(state.currentSection);
+        if (state.proposalAccepted) setProposalAccepted(true);
+        if (state.pinkTheme) setPinkTheme(true);
+      } catch (e) {
+        console.error("Erreur de sauvegarde:", e);
+      }
+    }
+    setIsLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem('gazouProgress', JSON.stringify({
+        unlocked,
+        currentSection,
+        proposalAccepted,
+        pinkTheme
+      }));
+    }
+  }, [unlocked, currentSection, proposalAccepted, pinkTheme, isLoaded]);
 
   useEffect(() => {
     document.body.classList.toggle('theme-pink', pinkTheme);
@@ -47,6 +75,8 @@ function App() {
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] } },
   };
+
+  if (!isLoaded) return null;
 
   return (
     <>

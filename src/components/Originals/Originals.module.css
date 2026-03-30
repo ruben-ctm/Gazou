@@ -9,10 +9,10 @@
 
 /* Netflix Intro Animation */
 .netflixIntroOverlay {
-  position: absolute;
+  position: fixed;
   inset: 0;
   background: #141414;
-  z-index: 50;
+  z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;

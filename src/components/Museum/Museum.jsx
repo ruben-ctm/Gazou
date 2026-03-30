@@ -157,6 +157,7 @@ export default function Museum({ triggerKawaii, onContinue }) {
       <ContinueButton
         onClick={onContinue}
         hint="Le Jukebox de Sabrina t'attend..."
+        theme="museum"
       />
     </section>
   );
