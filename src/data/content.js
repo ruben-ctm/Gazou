@@ -1,25 +1,22 @@
 // ============================================================
 //  ✏️  FICHIER DE CONFIGURATION — MODIFIE ICI TES CONTENUS
+//  ⚡  Généré automatiquement par integrate_media.py
 // ============================================================
 
 export const SECRET_CODE = "te quiero";
 
 // -----------------------------------------------------------
 // SECTION 2 — MUSÉE DES 5 ANS
-// Timeline : chaque entrée = un souvenir
-// photo: chemin dans public/photos/ (ex: "photo1.jpg")
-// funnyPhoto: la photo "dossier" au dos de la carte
 // -----------------------------------------------------------
 export const timelineEvents = [
   {
     id: 1,
     date: "Juin 2022",
     title: "Le Début de Tout ✨",
-    description:
-      "Le jour où tout a commencé. Ruben a regardé Gazou pour la première fois et a su que quelque chose d'extraordinaire venait de naître.",
-    photo: null, // → remplace par "photo1.jpg" quand tu ajoutes tes photos
-    funnyPhoto: null,
-    funnyCaption: "👀 La face cachée de ce souvenir...",
+    description: "Le jour où tout a commencé. Ruben a regardé Gazou pour la première fois et a su que quelque chose d'extraordinaire venait de naître.",
+    photo: "p01.jpg",
+    funnyPhoto: "p07.jpg",
+    funnyCaption: "📸 La face cachée de ce souvenir...",
     sticker: "🐱",
     insideJoke: "Tu te rappelles de cette soirée ? 😂",
   },
@@ -27,11 +24,10 @@ export const timelineEvents = [
     id: 2,
     date: "Été 2022",
     title: "Le Premier Été 🌞",
-    description:
-      "Des journées dorées, des fous rires, des aventures improvisées. Le temps s'arrêtait quand on était ensemble.",
-    photo: null,
-    funnyPhoto: null,
-    funnyCaption: "😂 Ce moment où tout a dérapé...",
+    description: "Des journées dorées, des fous rires, des aventures improvisées. Le temps s'arrêtait quand on était ensemble.",
+    photo: "p02.jpg",
+    funnyPhoto: "p08.jpg",
+    funnyCaption: "📸 La face cachée de ce souvenir...",
     sticker: "🌸",
     insideJoke: "Non mais sérieusement, pourquoi t'as fait ça ? 💀",
   },
@@ -39,11 +35,10 @@ export const timelineEvents = [
     id: 3,
     date: "Hiver 2022",
     title: "Premier Hiver ❄️",
-    description:
-      "Le froid dehors, la chaleur dedans. On a inventé nos propres rituels, nos propres traditions. Le monde pouvait bien attendre.",
-    photo: null,
-    funnyPhoto: null,
-    funnyCaption: "🥶 La vérité sur cet hiver...",
+    description: "Le froid dehors, la chaleur dedans. On a inventé nos propres rituels, nos propres traditions. Le monde pouvait bien attendre.",
+    photo: "p03.jpg",
+    funnyPhoto: "p09.jpg",
+    funnyCaption: "📸 La face cachée de ce souvenir...",
     sticker: "⭐",
     insideJoke: "Cet hiver-là restera gravé dans ma mémoire pour toujours.",
   },
@@ -51,11 +46,10 @@ export const timelineEvents = [
     id: 4,
     date: "2023",
     title: "L'Année de la Complicité 💫",
-    description:
-      "On s'est découverts encore plus. Les silences devenaient confortables, les regards suffisants. Une vraie connivence.",
-    photo: null,
-    funnyPhoto: null,
-    funnyCaption: "🙈 Ce que Gazou ne voulait pas qu'on voie...",
+    description: "On s'est découverts encore plus. Les silences devenaient confortables, les regards suffisants.",
+    photo: "p04.png",
+    funnyPhoto: "p10.jpg",
+    funnyCaption: "📸 La face cachée de ce souvenir...",
     sticker: "🌺",
     insideJoke: "2023... quelle année quand même !",
   },
@@ -63,11 +57,10 @@ export const timelineEvents = [
     id: 5,
     date: "2024",
     title: "Les Aventures Continuent 🗺️",
-    description:
-      "Chaque saison apportait son lot de surprises, de défis et de bonheur. On grandissait ensemble sans même s'en rendre compte.",
-    photo: null,
-    funnyPhoto: null,
-    funnyCaption: "😭 Le vrai visage de cette aventure...",
+    description: "Chaque saison apportait son lot de surprises, de défis et de bonheur. On grandissait ensemble.",
+    photo: "p05.jpg",
+    funnyPhoto: "p11.jpg",
+    funnyCaption: "📸 La face cachée de ce souvenir...",
     sticker: "🎀",
     insideJoke: "Je suis tellement content qu'on ait vécu ça ensemble.",
   },
@@ -75,11 +68,10 @@ export const timelineEvents = [
     id: 6,
     date: "2025 — Aujourd'hui",
     title: "Ici & Maintenant 💗",
-    description:
-      "Cinq ans plus tard, je te regarde et je me dis que je suis l'homme le plus chanceux du monde. Cette page n'est que le début.",
-    photo: null,
-    funnyPhoto: null,
-    funnyCaption: "🥹 Ce qui nous attend encore...",
+    description: "Cinq ans plus tard, je te regarde et je me dis que je suis l'homme le plus chanceux du monde. Cette page n'est que le début.",
+    photo: "p06.jpg",
+    funnyPhoto: "p12.jpg",
+    funnyCaption: "📸 La face cachée de ce souvenir...",
     sticker: "💖",
     insideJoke: "Et dire qu'on a encore tout l'avenir devant nous ❤️",
   },
@@ -87,14 +79,12 @@ export const timelineEvents = [
 
 // -----------------------------------------------------------
 // SECTION 3 — JUKEBOX (Blind Test)
-// audioSrc: chemin dans public/music/
-// correctMemory: index de la bonne réponse dans `choices`
 // -----------------------------------------------------------
 export const blindTestRounds = [
   {
     id: 1,
     song: "Espresso",
-    audioSrc: null, // → "espresso.mp3"
+    audioSrc: null,
     question: "Quelle chanson colle le mieux à ce souvenir ?",
     choices: [
       "Notre premier voyage ensemble",
@@ -107,12 +97,12 @@ export const blindTestRounds = [
   {
     id: 2,
     song: "Please Please Please",
-    audioSrc: null, // → "please.mp3"
+    audioSrc: null,
     question: "À quelle occasion cette chanson t'a fait penser à moi ?",
     choices: [
       "Quand tu m'as supplié de pas regarder ce film sans toi",
       "Notre premier été ensemble",
-      "Le jour où tout a failli mal tourner (mais ça s'est bien passé 😅)",
+      "Le jour où tout a failli mal tourner mais ça s'est bien passé 😅",
     ],
     correctIndex: 2,
     successMessage: "🌹 Tu t'en souviens ! J'avais tellement peur ce jour-là.",
@@ -120,8 +110,8 @@ export const blindTestRounds = [
   {
     id: 3,
     song: "Nonsense",
-    audioSrc: null, // → "nonsense.mp3"
-    question: "Cette chanson décrit parfaitement...",
+    audioSrc: null,
+    question: "Cette chanson décrit quelle facette de nous ?",
     choices: [
       "Nos conversations à 3h du matin",
       "La façon dont tu regardes les séries en oubliant que j'existe",
@@ -134,8 +124,6 @@ export const blindTestRounds = [
 
 // -----------------------------------------------------------
 // SECTION 4 — RUBEN ORIGINALS
-// videoSrc: chemin dans public/videos/
-// thumbnail: chemin dans public/photos/
 // -----------------------------------------------------------
 export const moviesData = {
   categories: [
@@ -147,30 +135,27 @@ export const moviesData = {
           id: "galere1",
           title: "Mission (Im)possible",
           subtitle: "Un film de Ruben • 2022",
-          description:
-            "L'épopée de ce jour mémorable où tout est parti de travers. Un chef-d'œuvre du chaos organisé.",
-          thumbnail: null,
-          videoSrc: null,
+          description: "L\'épopée de ce jour mémorable où tout est parti de travers. Un chef-d\'œuvre du chaos organisé.",
+          thumbnail: "p13.jpg",
+          videoSrc: "v001.mp4",
           duration: "∞",
         },
         {
           id: "galere2",
           title: "GPS : Ennemi Public N°1",
           subtitle: "Un film de Ruben • 2023",
-          description:
-            "Quand se perdre devient une aventure. Un road-trip à la navigation... créative.",
-          thumbnail: null,
-          videoSrc: null,
+          description: "Quand se perdre devient une aventure. Un road-trip à la navigation créative.",
+          thumbnail: "p14.jpg",
+          videoSrc: "v002.mp4",
           duration: "Trop long",
         },
         {
           id: "galere3",
           title: "La Recette du Désastre",
           subtitle: "Un film de Ruben • 2024",
-          description:
-            "Cuisine + Nous = Pompiers ? Un documentaire culinaire haletant.",
-          thumbnail: null,
-          videoSrc: null,
+          description: "Cuisine + Nous = Pompiers ? Un documentaire culinaire haletant.",
+          thumbnail: "p15.jpg",
+          videoSrc: "v003.mp4",
           duration: "42 min",
         },
       ],
@@ -183,21 +168,19 @@ export const moviesData = {
           id: "emotion1",
           title: "Les Yeux qui Parlent",
           subtitle: "Un film de Ruben • 2022",
-          description:
-            "Un regard qui vaut mille mots. Court-métrage intime et inoubliable.",
-          thumbnail: null,
-          videoSrc: null,
+          description: "Un regard qui vaut mille mots. Court-métrage intime et inoubliable.",
+          thumbnail: "p16.jpg",
+          videoSrc: "v004.mp4",
           duration: "Éternel",
         },
         {
           id: "emotion2",
           title: "La Nuit des Confidences",
           subtitle: "Un film de Ruben • 2023",
-          description:
-            "Ces conversations du soir qui construisent une histoire d'amour.",
-          thumbnail: null,
-          videoSrc: null,
-          duration: "Jusqu'à l'aube",
+          description: "Ces conversations du soir qui construisent une histoire d\'amour.",
+          thumbnail: "p17.jpg",
+          videoSrc: "v005.mp4",
+          duration: "Jusqu\'à l\'aube",
         },
       ],
     },
@@ -207,31 +190,29 @@ export const moviesData = {
       films: [
         {
           id: "gazou1",
-          title: "Un Génie à l'œuvre",
+          title: "Un Génie à l\'œuvre",
           subtitle: "Documentaire • 2022-2026",
-          description:
-            "Portrait sans filtre de la personne la plus imprévisible et attachante que je connaisse.",
-          thumbnail: null,
-          videoSrc: null,
+          description: "Portrait sans filtre de la personne la plus imprévisible et attachante que je connaisse.",
+          thumbnail: "p18.jpg",
+          videoSrc: "v006.mp4",
           duration: "5 ans",
         },
         {
           id: "gazou2",
           title: "Gazou vs. La Technologie",
           subtitle: "Comédie • Série",
-          description: "Un combat épique. La technologie n'a aucune chance... ou si ?",
-          thumbnail: null,
-          videoSrc: null,
+          description: "Un combat épique. La technologie n\'a aucune chance... ou si ?",
+          thumbnail: "p19.jpg",
+          videoSrc: "v007.mp4",
           duration: "En cours",
         },
         {
           id: "gazou3",
           title: "Le Monde Selon Gazou",
           subtitle: "Philosophie • 2023",
-          description:
-            "Une vision unique du monde, avec une logique qui n'appartient qu'à elle.",
-          thumbnail: null,
-          videoSrc: null,
+          description: "Une vision unique du monde, avec une logique qui n\'appartient qu\'à elle.",
+          thumbnail: "p20.jpg",
+          videoSrc: "v008.mp4",
           duration: "Infini",
         },
       ],
@@ -241,7 +222,6 @@ export const moviesData = {
 
 // -----------------------------------------------------------
 // SECTION 5 — LETTRE FINALE
-// Remplace ce texte par ta vraie lettre 💌
 // -----------------------------------------------------------
 export const letterText = `Ma Gazou,
 
