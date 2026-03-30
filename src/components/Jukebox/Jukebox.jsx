@@ -176,7 +176,7 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
                 <p className={styles.completeSub}>Tu connais nos souvenirs par cœur 💛</p>
                 <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
                   <button className="btn-primary" onClick={handleReset}>Rejouer</button>
-                  <ContinueButton onClick={onContinue} label="La suite →" />
+                  <ContinueButton onClick={onContinue} label="La suite" />
                 </div>
               </motion.div>
             ) : phase === 'idle' ? (

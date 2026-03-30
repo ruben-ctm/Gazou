@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { moviesData } from '../../data/content';
 import ContinueButton from '../ContinueButton/ContinueButton';
@@ -54,7 +54,16 @@ function StoryPlayer({ activeFilmId, allFilms, onClose, onUpdateLastWatched }) {
         <button className={styles.storyClose} onClick={(e) => { e.stopPropagation(); onClose(); }}>×</button>
       </div>
 
-      <div className={styles.storyVideoContainer}>
+      <motion.div 
+        className={styles.storyVideoContainer}
+        drag="x"
+        dragConstraints={{ left: 0, right: 0 }}
+        dragElastic={0.2}
+        onDragEnd={(e, { offset }) => {
+          if (offset.x < -50) handleNext();
+          else if (offset.x > 50) handlePrev();
+        }}
+      >
         <video 
            key={currentFilm.videoSrc}
            ref={videoRef}
@@ -67,7 +76,7 @@ function StoryPlayer({ activeFilmId, allFilms, onClose, onUpdateLastWatched }) {
            onPause={() => setIsPlaying(false)}
         />
         {!isPlaying && <div className={styles.pausedIndicator}>⏸</div>}
-      </div>
+      </motion.div>
 
       <div className={styles.tapZones}>
          <div className={styles.tapLeft} onClick={handlePrev} />
@@ -132,8 +141,15 @@ function FilmCard({ film, onOpen }) {
 export default function Originals({ onContinue }) {
   const [activeFilmId, setActiveFilmId] = useState(null);
   const [lastWatchedVideoId, setLastWatchedVideoId] = useState(null);
+  const [showIntro, setShowIntro] = useState(true);
   
   const allFilms = moviesData.categories.flatMap(cat => cat.films);
+
+  useEffect(() => {
+    // Intro animation timeout (like Netflix ta-dum)
+    const t = setTimeout(() => setShowIntro(false), 2500);
+    return () => clearTimeout(t);
+  }, []);
 
   const handlePlayMain = () => {
     // Reprend la dernière vidéo regardée, ou la première
@@ -152,6 +168,25 @@ export default function Originals({ onContinue }) {
 
   return (
     <section id="originals" className={`section ${styles.originalsSection}`}>
+      <AnimatePresence>
+        {showIntro && (
+          <motion.div 
+            className={styles.netflixIntroOverlay}
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.8 } }}
+          >
+             <motion.div
+               className={styles.netflixN}
+               initial={{ scale: 2.5, opacity: 0 }}
+               animate={{ scale: 1, opacity: 1 }}
+               transition={{ duration: 1.2, ease: "easeOut" }}
+             >
+               R
+             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Netflix-style top bar */}
       <div className={styles.topBar}>
         <div className={styles.logoArea}>
@@ -174,17 +209,19 @@ export default function Originals({ onContinue }) {
         viewport={{ once: true }}
       >
         <div className={styles.heroContent}>
-          <p className={styles.heroTag}>✦ RUBEN ORIGINALS PRÉSENTE ✦</p>
+          <p className={styles.heroTag}>SERIES</p>
           <h2 className={styles.heroTitle}>L'Odyssée de Gazou</h2>
           <p className={styles.heroDesc}>
             Une collection de films rares. Des moments vrais. Une histoire d'amour filmée dans la vie réelle.
           </p>
           <div className={styles.heroBtns}>
-            <button
-              className="btn-primary"
-              onClick={handlePlayMain}
-            >
-              ▶ {lastWatchedVideoId ? "Reprendre" : "Regarder"}
+            <button className={styles.btnPlay} onClick={handlePlayMain}>
+              ▶ {lastWatchedVideoId ? "Reprendre" : "Lecture"}
+            </button>
+            <button className={styles.btnInfo} onClick={() => {
+              document.querySelector(`.${styles.categories}`)?.scrollIntoView({ behavior: 'smooth' });
+            }}>
+              ⓘ Plus d'infos
             </button>
           </div>
         </div>

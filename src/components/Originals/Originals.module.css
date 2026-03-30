@@ -1,20 +1,41 @@
 .originalsSection {
-  background: #0a0a0f;
+  background: #141414; /* Netflix pure dark background */
   min-height: auto;
   padding: 0;
   align-items: stretch;
   justify-content: flex-start;
-  color: white;
+  color: #e5e5e5;
 }
 
-/* Top bar */
+/* Netflix Intro Animation */
+.netflixIntroOverlay {
+  position: absolute;
+  inset: 0;
+  background: #141414;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.netflixN {
+  font-family: 'Arial', sans-serif;
+  font-weight: 900;
+  font-size: 15rem;
+  color: #E50914; /* Netflix Red */
+  text-shadow: 0 0 40px rgba(229, 9, 20, 0.4);
+}
+
+/* Top bar - Netflix Style */
 .topBar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1.5rem 3rem;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
-  position: sticky;
+  background: linear-gradient(to bottom, rgba(20,20,20,0.9) 0%, rgba(20,20,20,0) 100%);
+  position: absolute; /* Floats over hero */
+  width: 100%;
   top: 0;
   z-index: 10;
 }
@@ -26,12 +47,12 @@
 }
 
 .logoR {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Arial', sans-serif;
   font-size: 2.5rem;
-  font-style: italic;
-  color: var(--gold);
-  text-shadow: 0 0 20px rgba(212,168,67,0.6);
+  font-weight: 900;
+  color: #E50914; /* Netflix Red */
   line-height: 1;
+  text-shadow: 0 0 10px rgba(229, 9, 20, 0.3);
 }
 
 .logoText {
@@ -41,102 +62,180 @@
 
 .logoMain {
   font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   font-weight: 900;
   letter-spacing: 0.25em;
-  color: white;
+  color: #e5e5e5;
 }
 
 .logoSub {
   font-family: 'Inter', sans-serif;
-  font-size: 0.55rem;
-  letter-spacing: 0.2em;
-  color: var(--gold-light);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: #a3a3a3;
 }
 
-.topBarRight { font-family: var(--font-elegant); font-size: 0.85rem; color: rgba(255,255,255,0.5); }
-.topBarTag { font-style: italic; }
+.topBarRight { font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.85rem; color: #fff; }
+.topBarTag { opacity: 0.8; }
 
-/* Hero banner */
+/* Hero banner Netflix */
 .heroBanner {
   position: relative;
-  min-height: 55vh;
+  min-height: 70vh;
   display: flex;
   align-items: flex-end;
   padding: 4rem 3rem;
   background: 
-    linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%),
-    linear-gradient(135deg, #2d0c18 0%, #1a0028 50%, #0a0a20 100%);
-  margin-bottom: 2rem;
+    linear-gradient(to top, #141414 0%, transparent 40%),
+    linear-gradient(to right, rgba(20,20,20,0.8) 0%, rgba(20,20,20,0.3) 50%, transparent 100%),
+    url('/photos/p01.jpg') center/cover no-repeat; /* Optional fallback, ideally dynamic */
+  box-shadow: inset 0 -50px 100px #141414;
 }
 
-.heroContent { max-width: 500px; }
+.heroContent { max-width: 600px; z-index: 2; }
 
 .heroTag {
-  font-family: var(--font-elegant);
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
   font-size: 0.8rem;
-  letter-spacing: 0.3em;
-  color: var(--gold);
-  text-transform: uppercase;
-  margin-bottom: 0.75rem;
+  letter-spacing: 0.4em;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Red line before the N SERIES tag */
+.heroTag::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+  background: #E50914;
 }
 
 .heroTitle {
-  font-family: var(--font-serif);
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  font-style: italic;
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  text-transform: uppercase;
   color: white;
-  margin-bottom: 1rem;
-  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+  line-height: 1;
 }
 
 .heroDesc {
-  font-family: var(--font-elegant);
-  font-size: 1rem;
-  color: rgba(255,255,255,0.75);
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  line-height: 1.5;
+  margin-bottom: 2rem;
 }
 
 .heroBtns { display: flex; gap: 1rem; flex-wrap: wrap; }
 
-/* Categories */
+/* Netflix Primary Button */
+.btnPlay {
+  background: white;
+  color: black;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 0.6rem 2rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s;
+}
+
+.btnPlay:hover {
+  background: rgba(255,255,255,0.7);
+}
+
+.btnInfo {
+  background: rgba(109, 109, 110, 0.7);
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 0.6rem 2rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.2s;
+}
+
+.btnInfo:hover {
+  background: rgba(109, 109, 110, 0.4);
+}
+
+/* Netflix Horizontal Categories */
 .categories {
-  padding: 0 2rem 4rem;
+  padding: 0 0 4rem; /* No horizontal padding to allow full bleed scroll */
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 3rem;
+  position: relative;
+  z-index: 2;
+  margin-top: -3rem; /* Overlap hero gradient slightly */
 }
 
 .category { margin-bottom: 0; }
 
 .catTitle {
-  font-family: var(--font-serif);
-  font-size: 1.2rem;
-  color: rgba(255,255,255,0.9);
-  margin-bottom: 1rem;
-  padding-left: 0.25rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #e5e5e5;
+  margin-bottom: 0.75rem;
+  padding-left: 3rem;
 }
 
+/* Horizonaly scrolling row */
 .filmRow {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 3rem 2rem 3rem; /* Add horizontal padding inside scroll area */
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
 }
+.filmRow::-webkit-scrollbar { display: none; } /* Chrome */
 
 /* Film card */
 .filmCard {
+  flex: 0 0 clamp(160px, 20vw, 240px); /* Fixed width for cards in a row based on viewport */
+  scroll-snap-align: start;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 4px; /* Netflix uses small border radius */
   overflow: hidden;
   position: relative;
+  transition: transform 0.3s;
+}
+
+.filmCard:hover {
+  transform: scale(1.05); /* Netflix scale effect */
+  z-index: 10;
 }
 
 .thumbnail {
   aspect-ratio: 16/9;
   position: relative;
-  background: #1a1a2e;
-  border-radius: 8px;
+  background: #2a2a2a;
+  border-radius: 4px;
   overflow: hidden;
 }
 
@@ -150,8 +249,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  background: linear-gradient(135deg, #2d0c18, #1a0028);
-  font-family: var(--font-elegant);
+  background: linear-gradient(135deg, #141414, #2a2a2a);
+  font-family: 'Inter', sans-serif;
   font-size: 0.75rem;
   color: rgba(255,255,255,0.4);
 }
@@ -161,7 +260,7 @@
 .thumbOverlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.6);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -179,51 +278,40 @@
   justify-content: center;
   font-size: 1rem;
   color: white;
+  background: rgba(0,0,0,0.4);
 }
 
 .thumbTitle {
-  font-family: var(--font-serif);
-  font-size: 0.85rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
   color: white;
   text-align: center;
   padding: 0 0.5rem;
 }
 
 .thumbDuration {
-  font-family: var(--font-body);
-  font-size: 0.7rem;
-  color: rgba(255,255,255,0.6);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
 }
 
 .durationBadge {
   position: absolute;
-  bottom: 4px;
-  right: 6px;
+  bottom: 8px;
+  right: 8px;
   background: rgba(0,0,0,0.8);
-  color: rgba(255,255,255,0.8);
-  font-family: var(--font-body);
-  font-size: 0.65rem;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 0.7rem;
   padding: 2px 6px;
   border-radius: 3px;
 }
 
-.filmCardInfo { padding: 0.5rem 0.25rem; }
-
-.filmCardTitle {
-  font-family: var(--font-elegant);
-  font-size: 0.9rem;
-  color: rgba(255,255,255,0.9);
-  margin-bottom: 0.2rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.filmCardSub {
-  font-size: 0.7rem;
-  color: rgba(255,255,255,0.4);
-  font-family: var(--font-body);
-}
+/* Hidden Netflix style info (no text below card) */
+.filmCardInfo { display: none; }
 
 /* Story Player */
 .storyOverlay {
@@ -334,6 +422,9 @@
 
 /* Mobile */
 @media (max-width: 600px) {
-  .topBar, .heroBanner, .categories { padding-left: 1.25rem; padding-right: 1.25rem; }
-  .filmRow { grid-template-columns: repeat(2, 1fr); }
+  .topBar, .heroBanner { padding-left: 1.25rem; padding-right: 1.25rem; }
+  .catTitle { padding-left: 1.25rem; }
+  .filmRow { padding: 0 1.25rem 2rem 1.25rem; }
+  .filmCard { flex: 0 0 clamp(130px, 40vw, 160px); }
+  .netflixN { font-size: 8rem; }
 }
