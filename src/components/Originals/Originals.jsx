@@ -4,67 +4,76 @@ import { moviesData } from '../../data/content';
 import ContinueButton from '../ContinueButton/ContinueButton';
 import styles from './Originals.module.css';
 
-function FilmModal({ film, onClose }) {
+function StoryPlayer({ activeFilmId, allFilms, onClose, onUpdateLastWatched }) {
+  const startIndex = allFilms.findIndex(f => f.id === activeFilmId);
+  const [currentIndex, setCurrentIndex] = useState(startIndex !== -1 ? startIndex : 0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const videoRef = useRef(null);
+
+  const currentFilm = allFilms[currentIndex];
+
+  const handleNext = (e) => {
+    e?.stopPropagation();
+    if (currentIndex < allFilms.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+      onUpdateLastWatched(allFilms[currentIndex + 1].id);
+    } else {
+      onClose();
+    }
+  };
+
+  const handlePrev = (e) => {
+    e?.stopPropagation();
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+      onUpdateLastWatched(allFilms[currentIndex - 1].id);
+    }
+  };
+
+  const togglePlay = (e) => {
+    e?.stopPropagation();
+    if (videoRef.current) {
+      if (isPlaying) videoRef.current.pause();
+      else videoRef.current.play();
+      setIsPlaying(!isPlaying);
+    }
+  };
+
   return (
     <motion.div
-      className={styles.modalOverlay}
+      className={styles.storyOverlay}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      onClick={onClose}
     >
-      <motion.div
-        className={styles.modalContent}
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.8, opacity: 0 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Film frame decoration */}
-        <div className={styles.filmFrame}>
-          <div className={styles.filmPerf}>
-            {[...Array(8)].map((_, i) => <div key={i} className={styles.filmHole} />)}
-          </div>
-
-          <div className={styles.filmScreen}>
-            {film.videoSrc ? (
-              <video
-                src={`/videos/${film.videoSrc}`}
-                controls
-                autoPlay
-                className={styles.video}
-              />
-            ) : (
-              <div className={styles.videoPlaceholder}>
-                <div className={styles.projectorIcon}>🎬</div>
-                <p className={styles.vpTitle}>{film.title}</p>
-                <p className={styles.vpSub}>Dépose ta vidéo dans :</p>
-                <code className={styles.vpPath}>public/videos/{film.id}.mp4</code>
-              </div>
-            )}
-          </div>
-
-          <div className={styles.filmPerf}>
-            {[...Array(8)].map((_, i) => <div key={i} className={styles.filmHole} />)}
-          </div>
+      <div className={styles.storyHeader}>
+        <div className={styles.storyProgressInfo}>
+           <span className={styles.storyProgressCount}>{currentIndex + 1} / {allFilms.length}</span>
+           <span className={styles.storyTitle}>{currentFilm.title}</span>
         </div>
+        <button className={styles.storyClose} onClick={(e) => { e.stopPropagation(); onClose(); }}>×</button>
+      </div>
 
-        {/* Film info */}
-        <div className={styles.filmInfo}>
-          <motion.p
-            className={styles.filmDirectorTag}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            ✦ Un film de Ruben ✦
-          </motion.p>
-          <h3 className={styles.filmModalTitle}>{film.title}</h3>
-          <p className={styles.filmModalDesc}>{film.description}</p>
-          <button className="btn-primary" onClick={onClose}>Fermer</button>
-        </div>
-      </motion.div>
+      <div className={styles.storyVideoContainer}>
+        <video 
+           key={currentFilm.videoSrc}
+           ref={videoRef}
+           src={`/videos/${currentFilm.videoSrc}`}
+           className={styles.storyVideo}
+           autoPlay
+           playsInline
+           onEnded={handleNext}
+           onPlay={() => setIsPlaying(true)}
+           onPause={() => setIsPlaying(false)}
+        />
+        {!isPlaying && <div className={styles.pausedIndicator}>⏸</div>}
+      </div>
+
+      <div className={styles.tapZones}>
+         <div className={styles.tapLeft} onClick={handlePrev} />
+         <div className={styles.tapCenter} onClick={togglePlay} />
+         <div className={styles.tapRight} onClick={handleNext} />
+      </div>
     </motion.div>
   );
 }
@@ -121,7 +130,25 @@ function FilmCard({ film, onOpen }) {
 }
 
 export default function Originals({ onContinue }) {
-  const [activeFilm, setActiveFilm] = useState(null);
+  const [activeFilmId, setActiveFilmId] = useState(null);
+  const [lastWatchedVideoId, setLastWatchedVideoId] = useState(null);
+  
+  const allFilms = moviesData.categories.flatMap(cat => cat.films);
+
+  const handlePlayMain = () => {
+    // Reprend la dernière vidéo regardée, ou la première
+    if (lastWatchedVideoId) {
+      setActiveFilmId(lastWatchedVideoId);
+    } else if (allFilms.length > 0) {
+      setActiveFilmId(allFilms[0].id);
+      setLastWatchedVideoId(allFilms[0].id);
+    }
+  };
+
+  const openFilm = (film) => {
+    setActiveFilmId(film.id);
+    setLastWatchedVideoId(film.id);
+  };
 
   return (
     <section id="originals" className={`section ${styles.originalsSection}`}>
@@ -155,9 +182,9 @@ export default function Originals({ onContinue }) {
           <div className={styles.heroBtns}>
             <button
               className="btn-primary"
-              onClick={() => setActiveFilm(moviesData.categories[0].films[0])}
+              onClick={handlePlayMain}
             >
-              ▶ Regarder
+              ▶ {lastWatchedVideoId ? "Reprendre" : "Regarder"}
             </button>
           </div>
         </div>
@@ -177,7 +204,7 @@ export default function Originals({ onContinue }) {
             <h3 className={styles.catTitle}>{cat.emoji} {cat.title}</h3>
             <div className={styles.filmRow}>
               {cat.films.map((film) => (
-                <FilmCard key={film.id} film={film} onOpen={setActiveFilm} />
+                <FilmCard key={film.id} film={film} onOpen={openFilm} />
               ))}
             </div>
           </motion.div>
@@ -185,8 +212,13 @@ export default function Originals({ onContinue }) {
       </div>
 
       <AnimatePresence>
-        {activeFilm && (
-          <FilmModal film={activeFilm} onClose={() => setActiveFilm(null)} />
+        {activeFilmId && (
+          <StoryPlayer 
+            activeFilmId={activeFilmId} 
+            allFilms={allFilms} 
+            onClose={() => setActiveFilmId(null)} 
+            onUpdateLastWatched={setLastWatchedVideoId}
+          />
         )}
       </AnimatePresence>
 

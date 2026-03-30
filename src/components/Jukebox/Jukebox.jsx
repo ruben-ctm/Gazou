@@ -247,13 +247,7 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
         </div>
       </div>
 
-      {/* Bouton Continuer visible même si le blind test n'est pas terminé */}
-      {phase !== 'complete' && (
-        <ContinueButton
-          onClick={onContinue}
-          hint="Tu peux aussi passer directement..."
-        />
-      )}
+      {/* Bouton Continuer visible uniquement à la fin du jeu (affiché dans le bloc complete plus haut) */}
 
       <audio ref={audioRef} style={{ display: 'none' }} />
     </section>

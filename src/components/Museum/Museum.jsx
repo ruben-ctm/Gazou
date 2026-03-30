@@ -97,7 +97,7 @@ function TimelineItem({ event, index, triggerKawaii }) {
   const isLeft = index % 2 === 0;
 
   const handleFlip = () => {
-    triggerKawaii('🌸', 'Haha, je t\'avais pas dit ça ! 😂', window.innerWidth / 2, window.innerHeight / 2);
+    // Aucune action supplémentaire requise au retournement
   };
 
   return (

@@ -225,119 +225,111 @@
   font-family: var(--font-body);
 }
 
-/* Modal */
-.modalOverlay {
+/* Story Player */
+.storyOverlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.9);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-.modalContent {
-  width: 100%;
-  max-width: 800px;
+  background: #000;
+  z-index: 2000;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-}
-
-/* Film frame */
-.filmFrame {
-  background: #1a1a1a;
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow: 0 10px 60px rgba(0,0,0,0.8);
-}
-
-.filmPerf {
-  background: #111;
-  display: flex;
-  gap: 12px;
-  padding: 6px 12px;
   justify-content: center;
+  align-items: center;
 }
 
-.filmHole {
-  width: 16px;
-  height: 10px;
-  border-radius: 3px;
-  background: #333;
-  border: 1px solid #444;
-}
-
-.filmScreen { aspect-ratio: 16/9; overflow: hidden; }
-
-.video { width: 100%; height: 100%; object-fit: contain; background: black; }
-
-.videoPlaceholder {
+.storyHeader {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #1a0028, #2d0c18);
+  padding: 1.5rem 1.5rem 6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  z-index: 2010;
+  background: linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+  pointer-events: none; /* Let clicks pass through except buttons */
+}
+
+.storyProgressInfo {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
+  gap: 0.2rem;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
 }
 
-.projectorIcon { font-size: 3.5rem; }
+.storyProgressCount {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+}
 
-.vpTitle {
+.storyTitle {
   font-family: var(--font-serif);
-  font-style: italic;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+}
+
+.storyClose {
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.5rem;
   color: white;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: all 0.2s;
 }
 
-.vpSub {
-  font-family: var(--font-elegant);
-  color: rgba(255,255,255,0.5);
-  font-size: 0.9rem;
-}
+.storyClose:hover { background: rgba(255, 255, 255, 0.3); transform: scale(1.1); }
 
-.vpPath {
-  background: rgba(255,255,255,0.1);
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  color: var(--gold-light);
-}
-
-/* Film info */
-.filmInfo {
-  text-align: center;
+.storyVideoContainer {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 0.5rem;
 }
 
-.filmDirectorTag {
-  font-family: var(--font-elegant);
-  font-style: italic;
-  color: var(--gold-light);
-  font-size: 0.9rem;
-  letter-spacing: 0.1em;
+.storyVideo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
-.filmModalTitle {
-  font-family: var(--font-serif);
-  font-size: 1.8rem;
-  font-style: italic;
-  color: white;
+/* Invisible Tap Zones */
+.tapZones {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  z-index: 2005;
 }
 
-.filmModalDesc {
-  font-family: var(--font-elegant);
-  color: rgba(255,255,255,0.7);
-  font-size: 1rem;
-  line-height: 1.6;
-  max-width: 500px;
-  margin-bottom: 0.5rem;
+.tapLeft { width: 30%; height: 100%; cursor: w-resize; }
+.tapCenter { width: 40%; height: 100%; cursor: pointer; }
+.tapRight { width: 30%; height: 100%; cursor: e-resize; }
+
+.pausedIndicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4rem;
+  color: rgba(255, 255, 255, 0.9);
+  pointer-events: none;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+  z-index: 2008;
 }
 
 /* Mobile */

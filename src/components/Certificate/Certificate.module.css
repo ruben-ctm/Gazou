@@ -258,3 +258,36 @@
   .certHeader { flex-direction: column; text-align: center; }
   .sigRow { grid-template-columns: 1fr; }
 }
+
+/* Print (Fix for mobile PDF export) */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  .certSection {
+    padding: 0;
+    margin: 0;
+    background: white;
+  }
+  .certificate {
+    width: 210mm;
+    max-width: 210mm;
+    /* Height A4 is 297mm, we leave it flexible though to fit content */
+    margin: 0 auto;
+    box-shadow: none;
+    page-break-inside: avoid;
+    transform: none !important; /* Prevent any scaling */
+  }
+  .certHeader { 
+    flex-direction: row !important; 
+    text-align: left !important; 
+    flex-wrap: nowrap !important;
+  }
+  .sigRow { 
+    grid-template-columns: 1fr 1fr !important; 
+  }
+  .exportBtn {
+    display: none !important;
+  }
+}
