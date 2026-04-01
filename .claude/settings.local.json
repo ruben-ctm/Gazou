@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l \"c:\\\\Users\\\\ruben\\\\Desktop\\\\Gazou\\\\src\\\\components\"/*.jsx \"c:\\\\Users\\\\ruben\\\\Desktop\\\\Gazou\\\\src\\\\components\"/*/*.jsx)",
+      "Bash(gh pr:*)",
+      "Bash(npm run:*)"
+    ]
+  }
+}
