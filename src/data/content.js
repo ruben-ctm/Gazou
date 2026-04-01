@@ -2299,7 +2299,7 @@ Je suis très ému de t'écrire ça (actuellement on est en appel et tu ne sais 
 
 Je t'aime Garance.
 
-Ruben (PS: Tu as la lettre en physique dans l'enveloppe ♥️)`;
+(PS: Tu as la lettre en physique dans l'enveloppe ♥️)`;
 
 // -----------------------------------------------------------
 // SECTION 6 — DEMANDE EN MARIAGE
