@@ -142,12 +142,24 @@ export default function Originals({ onContinue }) {
   const [activeFilmId, setActiveFilmId] = useState(null);
   const [lastWatchedVideoId, setLastWatchedVideoId] = useState(null);
   const [showIntro, setShowIntro] = useState(true);
+  const [showInfo, setShowInfo] = useState(false);
   
   const allFilms = moviesData.categories.flatMap(cat => cat.films);
 
   useEffect(() => {
     // Intro animation timeout (like Netflix ta-dum)
-    const t = setTimeout(() => setShowIntro(false), 2500);
+    const hasSeen = localStorage.getItem('netflixIntroSeen');
+    if (hasSeen) {
+      setShowIntro(false);
+      return;
+    }
+
+    const audio = new Audio('/music/Netflix.mp3');
+    audio.play().catch(e => console.warn('Netflix intro audio blocked', e));
+    const t = setTimeout(() => {
+      setShowIntro(false);
+      localStorage.setItem('netflixIntroSeen', 'true');
+    }, 2500);
     return () => clearTimeout(t);
   }, []);
 
@@ -204,9 +216,6 @@ export default function Originals({ onContinue }) {
             <span className={styles.logoSub}>ORIGINALS</span>
           </div>
         </div>
-        <div className={styles.topBarRight}>
-          <span className={styles.topBarTag}>🎬 Production Exclusive</span>
-        </div>
       </div>
 
       {/* Hero banner */}
@@ -226,9 +235,7 @@ export default function Originals({ onContinue }) {
             <button className={styles.btnPlay} onClick={handlePlayMain}>
               ▶ {lastWatchedVideoId ? "Reprendre" : "Lecture"}
             </button>
-            <button className={styles.btnInfo} onClick={() => {
-              document.querySelector(`.${styles.categories}`)?.scrollIntoView({ behavior: 'smooth' });
-            }}>
+            <button className={styles.btnInfo} onClick={() => setShowInfo(true)}>
               ⓘ Plus d'infos
             </button>
           </div>
@@ -258,12 +265,39 @@ export default function Originals({ onContinue }) {
 
       <AnimatePresence>
         {activeFilmId && (
-          <StoryPlayer 
-            activeFilmId={activeFilmId} 
-            allFilms={allFilms} 
-            onClose={() => setActiveFilmId(null)} 
+          <StoryPlayer
+            activeFilmId={activeFilmId}
+            allFilms={allFilms}
+            onClose={() => setActiveFilmId(null)}
             onUpdateLastWatched={setLastWatchedVideoId}
           />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showInfo && (
+          <motion.div
+            className={styles.infoOverlay}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowInfo(false)}
+          >
+            <motion.div
+              className={styles.infoModal}
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 20 }}
+              onClick={e => e.stopPropagation()}
+            >
+              <button className={styles.infoClose} onClick={() => setShowInfo(false)}>×</button>
+              <p className={styles.infoTag}>RUBEN ORIGINALS</p>
+              <h2 className={styles.infoTitle}>L'Odyssée de Gazou</h2>
+              <p className={styles.infoText}>
+                Ici tu retrouveras nos plus belles aventures, l'ordre n'a pas d'importance, juste profites de revoir notre BEST-OF bibiche ❤️.
+              </p>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
 

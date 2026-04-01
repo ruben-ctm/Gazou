@@ -1,7 +1,10 @@
 .certSection {
   background: linear-gradient(180deg, #f8f0e8 0%, var(--cream) 100%);
   min-height: 100vh;
-  padding: 5rem 1.25rem;
+  padding: 2rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Certificate document */

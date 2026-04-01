@@ -148,6 +148,21 @@ export default function Proposal({ onAccept }) {
               >
                 {proposalText.button2}
               </motion.button>
+
+              {/* Elusive NO button — now local to the container */}
+              <motion.button
+                ref={noBtnRef}
+                className={styles.noBtn}
+                style={
+                  noPos.x !== null
+                    ? { position: 'absolute', left: noPos.x, top: noPos.y }
+                    : { position: 'relative' }
+                }
+                animate={noPos.x !== null ? { x: 0, y: 0 } : {}}
+                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+              >
+                {proposalText.noButton}
+              </motion.button>
             </motion.div>
           ) : (
             <motion.div
@@ -163,23 +178,6 @@ export default function Proposal({ onAccept }) {
           )}
         </AnimatePresence>
       </motion.div>
-
-      {/* Elusive NO button */}
-      {!answered && (
-        <motion.button
-          ref={noBtnRef}
-          className={styles.noBtn}
-          style={
-            noPos.x !== null
-              ? { position: 'fixed', left: noPos.x, top: noPos.y, bottom: 'auto', right: 'auto' }
-              : {}
-          }
-          animate={noPos.x !== null ? { x: 0, y: 0 } : {}}
-          transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-        >
-          {proposalText.noButton}
-        </motion.button>
-      )}
     </section>
   );
 }

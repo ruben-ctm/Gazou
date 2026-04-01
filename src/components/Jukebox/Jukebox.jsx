@@ -1,8 +1,23 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { blindTestRounds } from '../../data/content';
+import { useFadingAudio } from '../../hooks/useFadingAudio';
 import ContinueButton from '../ContinueButton/ContinueButton';
 import styles from './Jukebox.module.css';
+
+const ALBUM_COVERS = [
+  '/photos_album/bc.png',
+  '/photos_album/mc.png',
+  '/photos_album/p.png',
+  '/photos_album/ist.png',
+];
+
+const THEMES = [
+  { primary: '#ff8c69', secondary: '#ffd4b2', bg1: '#fff0e8', bg2: '#ffe0cc', vinyl: '#4a2010', vinylMid: '#6a3520' },
+  { primary: '#9b7fd4', secondary: '#d4b8f0', bg1: '#f3eeff', bg2: '#e8ddf8', vinyl: '#1e1040', vinylMid: '#3a2060' },
+  { primary: '#4facfe', secondary: '#a8edea', bg1: '#eaf6ff', bg2: '#d8f0f8', vinyl: '#0a2040', vinylMid: '#1a3560' },
+  { primary: '#f7971e', secondary: '#ffd200', bg1: '#fff8e0', bg2: '#fff0c0', vinyl: '#3a2800', vinylMid: '#5a4010' },
+];
 
 export default function Jukebox({ triggerKawaii, onContinue }) {
   const [currentRound, setCurrentRound] = useState(0);
@@ -15,6 +30,8 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
   const [score, setScore] = useState(0);
   const audioRef = useRef(null);
   const round = blindTestRounds[currentRound];
+  const theme = THEMES[currentRound] || THEMES[0];
+  const albumCover = ALBUM_COVERS[currentRound] || ALBUM_COVERS[0];
 
   // Easter egg: type "Nonsense"
   useEffect(() => {
@@ -32,13 +49,11 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
     return () => window.removeEventListener('keydown', handleKey);
   }, [typedKeys, triggerKawaii]);
 
+  useFadingAudio(round?.audioSrc, phase === 'playing' || phase === 'answered', 800);
+
   const handlePlay = () => {
     setPhase('playing');
     setIsVinylSpinning(true);
-    if (audioRef.current && round.audioSrc) {
-      audioRef.current.src = `/music/${round.audioSrc}`;
-      audioRef.current.play().catch(() => {});
-    }
   };
 
   const handleAnswer = (index) => {
@@ -76,16 +91,30 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
     setScore(0);
   };
 
+  const themeVars = useMemo(() => ({
+    '--jb-primary': theme.primary,
+    '--jb-secondary': theme.secondary,
+    '--jb-bg1': theme.bg1,
+    '--jb-bg2': theme.bg2,
+    '--jb-vinyl': theme.vinyl,
+    '--jb-vinyl-mid': theme.vinylMid,
+  }), [theme]);
+
   return (
-    <section id="jukebox" className={`section ${styles.jukeboxSection} ${nonsenseMode ? styles.nonsenseMode : ''}`}>
+    <section
+      id="jukebox"
+      data-section-scroll="true"
+      className={`section ${styles.jukeboxSection} ${nonsenseMode ? styles.nonsenseMode : ''}`}
+      style={themeVars}
+    >
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
-        <h2 className="section-title">Le Jukebox de Sabrina</h2>
-        <p className="section-subtitle">Retrouve la chanson qui correspond à chaque souvenir</p>
+        <h2 className="section-title">Le Jukebox</h2>
+        <p className="section-subtitle">Réponds juste et découvre nos chansons</p>
         <div className="gold-divider" />
       </motion.div>
 
@@ -93,7 +122,7 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
         {/* Vinyl player */}
         <div className={styles.playerSide}>
           <div className={styles.playerCase}>
-            {/* Top speaker grille  */}
+            {/* Top speaker grille */}
             <div className={styles.speakerGrille}>
               {[...Array(12)].map((_, i) => <div key={i} className={styles.speakerDot} />)}
             </div>
@@ -105,18 +134,35 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
                 animate={{ rotate: isVinylSpinning ? 360 : 0 }}
                 transition={{ duration: 2, repeat: isVinylSpinning ? Infinity : 0, ease: 'linear' }}
               >
+                {/* Groove rings */}
+                <div className={styles.grooveRing1} />
+                <div className={styles.grooveRing2} />
+                <div className={styles.grooveRing3} />
+
                 <div className={styles.vinylLabel}>
-                  <span className={styles.vinylArtist}>Sabrina</span>
-                  <span className={styles.vinylSong}>{phase !== 'idle' ? round?.song : '???'}</span>
+                  <img
+                    src={albumCover}
+                    alt="Album cover"
+                    className={styles.albumCover}
+                    draggable={false}
+                  />
+                  <div className={styles.labelOverlay}>
+                    <span className={styles.vinylSong}>
+                      {phase !== 'idle' ? round?.song : '???'}
+                    </span>
+                  </div>
+                  <div className={styles.labelHole} />
                 </div>
               </motion.div>
 
               {/* Tonearm */}
               <motion.div
                 className={styles.tonearm}
-                animate={{ rotate: isVinylSpinning ? 25 : 0 }}
+                animate={{ rotate: isVinylSpinning ? 0 : 25 }}
                 transition={{ duration: 0.8, ease: 'easeInOut' }}
-              />
+              >
+                <div className={styles.tonearmHead} />
+              </motion.div>
             </div>
 
             {/* Play button */}
@@ -139,7 +185,11 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
 
             {/* Decorative knobs */}
             <div className={styles.knobRow}>
-              {[...Array(3)].map((_, i) => <div key={i} className={styles.knob} />)}
+              {[...Array(3)].map((_, i) => (
+                <div key={i} className={styles.knob}>
+                  <div className={styles.knobIndicator} />
+                </div>
+              ))}
             </div>
           </div>
 
@@ -246,8 +296,6 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
           </AnimatePresence>
         </div>
       </div>
-
-      {/* Bouton Continuer visible uniquement à la fin du jeu (affiché dans le bloc complete plus haut) */}
 
       <audio ref={audioRef} style={{ display: 'none' }} />
     </section>

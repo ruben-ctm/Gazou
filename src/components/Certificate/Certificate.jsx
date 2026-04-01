@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -54,6 +54,7 @@ function SignatureCanvas({ label, id }) {
 
   const clearCanvas = () => {
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     setHasSignature(false);
@@ -77,12 +78,16 @@ function SignatureCanvas({ label, id }) {
         onTouchEnd={stopDraw}
       />
       <div className={styles.sigLine} />
+      <p className={styles.sigHint}>Signez ici avec votre doigt ou votre souris</p>
       {hasSignature && (
-        <button className={styles.clearBtn} onClick={clearCanvas}>
-          ✕ Effacer
+        <button 
+          data-html2canvas-ignore="true"
+          onClick={clearCanvas}
+          className={styles.clearBtn}
+        >
+          Effacer la signature
         </button>
       )}
-      {!hasSignature && <p className={styles.sigHint}>Signez ici avec votre doigt ou votre souris</p>}
     </div>
   );
 }
@@ -90,6 +95,7 @@ function SignatureCanvas({ label, id }) {
 export default function Certificate() {
   const certRef = useRef(null);
   const [exporting, setExporting] = useState(false);
+  const [showCallPopup, setShowCallPopup] = useState(false);
 
   const exportPDF = async () => {
     if (!certRef.current) return;
@@ -99,16 +105,37 @@ export default function Certificate() {
         scale: 2,
         useCORS: true,
         backgroundColor: '#fffdf8',
+        windowWidth: 794,
+        onclone: (doc) => {
+          const el = doc.getElementById('cert-document');
+          if (el) {
+            el.style.width = '794px';
+            el.style.maxWidth = 'none';
+            el.style.transform = 'none';
+            // Force desktop layout for signatures and header
+            const sigRow = el.querySelector('[class*="sigRow"]');
+            if (sigRow) sigRow.style.gridTemplateColumns = '1fr 1fr';
+            const header = el.querySelector('[class*="certHeader"]');
+            if (header) {
+              header.style.flexDirection = 'row';
+              header.style.textAlign = 'left';
+            }
+          }
+        }
       });
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
       const pageW = pdf.internal.pageSize.getWidth();
       const pageH = pdf.internal.pageSize.getHeight();
       const imgRatio = canvas.height / canvas.width;
-      const imgH = pageW * imgRatio;
+      const imgW = pageW;
+      const imgH = imgW * imgRatio;
+      
+      // Centre verticalement le diplôme
       const yOffset = imgH < pageH ? (pageH - imgH) / 2 : 0;
-      pdf.addImage(imgData, 'PNG', 0, yOffset, pageW, Math.min(imgH, pageH));
-      pdf.save('Certificat_Engagement_R&G.pdf');
+      pdf.addImage(imgData, 'PNG', 0, yOffset, imgW, Math.min(imgH, pageH));
+      pdf.save('Certificat_Engagement.pdf');
+      setShowCallPopup(true);
     } catch (err) {
       console.error(err);
     }
@@ -124,7 +151,7 @@ export default function Certificate() {
         style={{ width: '100%', maxWidth: 720, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}
       >
         {/* The certificate document */}
-        <div ref={certRef} className={styles.certificate}>
+        <div ref={certRef} id="cert-document" className={styles.certificate}>
           {/* Filigree corners */}
           <div className={`${styles.corner} ${styles.tl}`}>❧</div>
           <div className={`${styles.corner} ${styles.tr}`}>❧</div>
@@ -191,13 +218,75 @@ export default function Certificate() {
                       aussi imprévisible et merveilleux que les précédents.
                     </p>
                   </div>
+                  <div className={styles.article}>
+                    <p className={styles.articleNum}>Article IV</p>
+                    <p className={styles.articleText}>
+                      Il est formellement stipulé que les câlins sont obligatoires,
+                      que les soirées ensemble comptent double, et que « je t'aime »
+                      ne perdra jamais de sa valeur, peu importe le nombre de fois prononcé.
+                    </p>
+                  </div>
+                  <div className={styles.article}>
+                    <p className={styles.articleNum}>Article V</p>
+                    <p className={styles.articleText}>
+                      Les parties reconnaissent que les petits moments du quotidien 
+                      un ricard partagé, un regard complice, un fou rire inattendu
+                      constituent la matière première du bonheur et seront chéris comme tels.
+                    </p>
+                  </div>
+                  <div className={styles.article}>
+                    <p className={styles.articleNum}>Article VI</p>
+                    <p className={styles.articleText}>
+                      Il est acté que chaque dispute, aussi insignifiante soit-elle,
+                      se conclura obligatoirement par une réconciliation douce,
+                      et que jamais le soleil ne se couchera sur une rancune.
+                    </p>
+                  </div>
+                  <div className={styles.article}>
+                    <p className={styles.articleNum}>Article VII</p>
+                    <p className={styles.articleText}>
+                      Les soussignés s'engagent à continuer d'explorer le monde ensemble,
+                      à inventer de nouveaux souvenirs, et à choisir chaque jour,
+                      délibérément et avec joie, de s'aimer encore un peu plus qu'hier.
+                    </p>
+                  </div>
+                  <div className={styles.article}>
+                    <p className={styles.articleNum}>Article VIII</p>
+                    <p className={styles.articleText}>
+                      Il est convenu que les voyages, escapades et aventures partagées
+                      sont des investissements prioritaires, et que l'inconnu exploré à deux
+                      vaut infiniment mieux que le confort exploré seul.
+                    </p>
+                  </div>
+                  <div className={styles.article}>
+                    <p className={styles.articleNum}>Article IX</p>
+                    <p className={styles.articleText}>
+                      Les parties s'accordent le droit inconditionnel d'être imparfaites,
+                      de douter, de fléchir et la certitude absolue que l'autre sera là,
+                      sans jugement, avec tendresse, pour relever ensemble.
+                    </p>
+                  </div>
+                  <div className={styles.article}>
+                    <p className={styles.articleNum}>Article X</p>
+                    <p className={styles.articleText}>
+                      Le présent certificat est déclaré irrévocable, non soumis à prescription,
+                      et valable pour toutes les saisons, toutes les années, et tous les chapitres
+                      encore à écrire de cette belle et singulière histoire d'amour.
+                    </p>
+                  </div>
                 </div>
 
                 <div className={styles.certDivider} />
 
                 {/* Signature zone */}
                 <div className={styles.sigRow}>
-                  <SignatureCanvas label="Ruben" id="sig-ruben" />
+                  <div className={styles.sigField}>
+                    <p className={styles.sigLabel}>Ruben</p>
+                    <div className={styles.sigCanvas} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'transparent' }}>
+                      <img src="/signature-ruben.svg" alt="Signature Ruben" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                    </div>
+                    <div className={styles.sigLine} />
+                  </div>
                   <SignatureCanvas label="Garance" id="sig-garance" />
                 </div>
 
@@ -220,6 +309,74 @@ export default function Certificate() {
           {exporting ? '⏳ Génération en cours...' : '📄 Télécharger mon exemplaire PDF'}
         </motion.button>
       </motion.div>
+
+      {showCallPopup && (
+        <div
+          onClick={() => setShowCallPopup(false)}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 9999,
+            background: 'rgba(0,0,0,0.55)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: '1rem'
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              background: '#fffdf8',
+              borderRadius: '16px',
+              padding: '2.5rem 2rem',
+              maxWidth: '380px',
+              width: '100%',
+              textAlign: 'center',
+              boxShadow: '0 20px 60px rgba(100,60,20,0.2)',
+              border: '2px solid var(--gold)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '1rem'
+            }}
+          >
+            <div style={{ fontSize: '2.5rem' }}>📞</div>
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontSize: '1.4rem', color: 'var(--velvet)', margin: 0 }}>
+              Maintenant, appelle-moi !
+            </h3>
+            <p style={{ fontFamily: 'var(--font-elegant)', color: 'var(--text-mid)', fontSize: '0.95rem', margin: 0, lineHeight: 1.6 }}>
+              Ton certificat est téléchargé bibiche 🎉<br />
+              Il ne manque plus qu'un coup de fil pour le rendre officiel.
+            </p>
+            <a
+              href="tel:0783329934"
+              style={{
+                display: 'inline-block',
+                background: 'linear-gradient(135deg, var(--gold), #c89020)',
+                color: 'white',
+                borderRadius: '50px',
+                padding: '0.75rem 2rem',
+                fontFamily: 'var(--font-serif)',
+                fontStyle: 'italic',
+                fontSize: '1.2rem',
+                fontWeight: '700',
+                textDecoration: 'none',
+                letterSpacing: '0.05em',
+                boxShadow: '0 4px 16px rgba(212,168,67,0.4)'
+              }}
+            >
+              07 83 32 99 34
+            </a>
+            <button
+              onClick={() => setShowCallPopup(false)}
+              style={{
+                background: 'none', border: 'none', cursor: 'pointer',
+                fontFamily: 'var(--font-elegant)', fontSize: '0.8rem',
+                color: 'var(--text-light)', textDecoration: 'underline'
+              }}
+            >
+              Plus tard
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

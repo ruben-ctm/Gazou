@@ -82,14 +82,14 @@
 /* Hero banner Netflix */
 .heroBanner {
   position: relative;
-  min-height: 70vh;
+  min-height: 40vh;
   display: flex;
   align-items: flex-end;
   padding: 4rem 3rem;
   background: 
     linear-gradient(to top, #141414 0%, transparent 40%),
     linear-gradient(to right, rgba(20,20,20,0.8) 0%, rgba(20,20,20,0.3) 50%, transparent 100%),
-    url('/photos/p01.jpg') center/cover no-repeat; /* Optional fallback, ideally dynamic */
+    url('/photos/p05.jpg') center/cover no-repeat; /* Optional fallback, ideally dynamic */
   box-shadow: inset 0 -50px 100px #141414;
 }
 
@@ -120,7 +120,7 @@
 .heroTitle {
   font-family: 'Inter', sans-serif;
   font-weight: 900;
-  font-size: clamp(3rem, 8vw, 5.5rem);
+  font-size: clamp(2rem, 5vw, 3.5rem);
   text-transform: uppercase;
   color: white;
   margin-bottom: 1.5rem;
@@ -418,6 +418,69 @@
   pointer-events: none;
   filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
   z-index: 2008;
+}
+
+/* ---- INFO POPUP ---- */
+.infoOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.infoModal {
+  position: relative;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  max-width: 560px;
+  width: 100%;
+  padding: 2.5rem 2rem 2rem;
+  color: white;
+}
+
+.infoClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.8rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.25rem;
+}
+
+.infoClose:hover { color: white; }
+
+.infoTag {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: #E50914;
+  margin-bottom: 0.75rem;
+}
+
+.infoTitle {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 1.6rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.1;
+}
+
+.infoText {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: pre-wrap;
 }
 
 /* Mobile */
