@@ -241,9 +241,6 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
                 <p className={styles.promptText}>
                   Appuie sur <strong>Écouter</strong> pour lancer la musique, puis devine quel souvenir correspond.
                 </p>
-                <p className={styles.promptHint}>
-                  Tip secret : tape <em>"Nonsense"</em> sur ton clavier... 🤫
-                </p>
               </motion.div>
             ) : (
               <motion.div
