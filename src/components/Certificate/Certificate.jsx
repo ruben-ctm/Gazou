@@ -106,19 +106,28 @@ export default function Certificate() {
         useCORS: true,
         backgroundColor: '#fffdf8',
         windowWidth: 794,
-        onclone: (doc) => {
+        onclone: async (doc) => {
           const el = doc.getElementById('cert-document');
           if (el) {
             el.style.width = '794px';
             el.style.maxWidth = 'none';
             el.style.transform = 'none';
-            // Force desktop layout for signatures and header
             const sigRow = el.querySelector('[class*="sigRow"]');
             if (sigRow) sigRow.style.gridTemplateColumns = '1fr 1fr';
             const header = el.querySelector('[class*="certHeader"]');
             if (header) {
               header.style.flexDirection = 'row';
               header.style.textAlign = 'left';
+            }
+            // Inline SVG signature as base64 so html2canvas renders it
+            const sigImg = el.querySelector('img[alt="Signature Ruben"]');
+            if (sigImg) {
+              try {
+                const resp = await fetch('/signature-ruben.svg');
+                const svgText = await resp.text();
+                const b64 = 'data:image/svg+xml;base64,' + btoa(new TextEncoder().encode(svgText).reduce((s, b) => s + String.fromCharCode(b), ''));
+                sigImg.src = b64;
+              } catch (e) { console.warn('Could not inline signature', e); }
             }
           }
         }

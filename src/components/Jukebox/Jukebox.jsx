@@ -49,7 +49,8 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
     return () => window.removeEventListener('keydown', handleKey);
   }, [typedKeys, triggerKawaii]);
 
-  useFadingAudio(round?.audioSrc, phase === 'playing' || phase === 'answered', 800);
+  const isLastRound = currentRound === blindTestRounds.length - 1;
+  useFadingAudio(round?.audioSrc, phase === 'playing' || (phase === 'answered' && !isLastRound), 800);
 
   const handlePlay = () => {
     setPhase('playing');
