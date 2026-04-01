@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { blindTestRounds } from '../../data/content';
 import { useFadingAudio } from '../../hooks/useFadingAudio';
@@ -28,7 +28,6 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
   const [nonsenseMode, setNonsenseMode] = useState(false);
   const [typedKeys, setTypedKeys] = useState('');
   const [score, setScore] = useState(0);
-  const audioRef = useRef(null);
   const round = blindTestRounds[currentRound];
   const theme = THEMES[currentRound] || THEMES[0];
   const albumCover = ALBUM_COVERS[currentRound] || ALBUM_COVERS[0];
@@ -49,8 +48,7 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
     return () => window.removeEventListener('keydown', handleKey);
   }, [typedKeys, triggerKawaii]);
 
-  const isLastRound = currentRound === blindTestRounds.length - 1;
-  useFadingAudio(round?.audioSrc, phase === 'playing' || (phase === 'answered' && !isLastRound), 800);
+  const audioRef = useFadingAudio(round?.audioSrc, phase === 'playing', 800);
 
   const handlePlay = () => {
     setPhase('playing');
@@ -63,6 +61,7 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
     const correct = index === round.correctIndex;
     setIsCorrect(correct);
     setPhase('answered');
+    audioRef.current?.pause();
 
     if (correct) {
       setScore((s) => s + 1);
@@ -295,7 +294,6 @@ export default function Jukebox({ triggerKawaii, onContinue }) {
         </div>
       </div>
 
-      <audio ref={audioRef} style={{ display: 'none' }} />
     </section>
   );
 }

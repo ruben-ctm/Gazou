@@ -101,12 +101,20 @@ export default function Certificate() {
     if (!certRef.current) return;
     setExporting(true);
     try {
+      // Pre-fetch SVG signature so we can inline it synchronously in onclone
+      let sigBase64 = null;
+      try {
+        const resp = await fetch('/signature-ruben.svg');
+        const svgText = await resp.text();
+        sigBase64 = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText);
+      } catch (e) { console.warn('Could not pre-fetch signature', e); }
+
       const canvas = await html2canvas(certRef.current, {
         scale: 2,
         useCORS: true,
         backgroundColor: '#fffdf8',
         windowWidth: 794,
-        onclone: async (doc) => {
+        onclone: (doc) => {
           const el = doc.getElementById('cert-document');
           if (el) {
             el.style.width = '794px';
@@ -119,15 +127,9 @@ export default function Certificate() {
               header.style.flexDirection = 'row';
               header.style.textAlign = 'left';
             }
-            // Inline SVG signature as base64 so html2canvas renders it
-            const sigImg = el.querySelector('img[alt="Signature Ruben"]');
-            if (sigImg) {
-              try {
-                const resp = await fetch('/signature-ruben.svg');
-                const svgText = await resp.text();
-                const b64 = 'data:image/svg+xml;base64,' + btoa(new TextEncoder().encode(svgText).reduce((s, b) => s + String.fromCharCode(b), ''));
-                sigImg.src = b64;
-              } catch (e) { console.warn('Could not inline signature', e); }
+            if (sigBase64) {
+              const sigImg = el.querySelector('img[alt="Signature Ruben"]');
+              if (sigImg) sigImg.src = sigBase64;
             }
           }
         }
