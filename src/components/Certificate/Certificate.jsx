@@ -14,6 +14,7 @@ function SignatureCanvas({ label, id }) {
   const canvasRef = useRef(null);
   const [drawing, setDrawing] = useState(false);
   const [hasSignature, setHasSignature] = useState(false);
+  const [svgPath, setSvgPath] = useState('');
   const lastPos = useRef(null);
 
   const getPos = (e, canvas) => {
@@ -30,7 +31,10 @@ function SignatureCanvas({ label, id }) {
     setDrawing(true);
     setHasSignature(true);
     const canvas = canvasRef.current;
-    lastPos.current = getPos(e, canvas);
+    const pos = getPos(e, canvas);
+    lastPos.current = pos;
+    // Start new SVG segment
+    setSvgPath(prev => prev + `M ${pos.x.toFixed(1)} ${pos.y.toFixed(1)} `);
   };
 
   const draw = (e) => {
@@ -39,6 +43,8 @@ function SignatureCanvas({ label, id }) {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const pos = getPos(e, canvas);
+
+    // Canvas drawing (for display)
     ctx.beginPath();
     ctx.moveTo(lastPos.current.x, lastPos.current.y);
     ctx.lineTo(pos.x, pos.y);
@@ -47,6 +53,10 @@ function SignatureCanvas({ label, id }) {
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.stroke();
+
+    // SVG path string (for capture)
+    setSvgPath(prev => prev + `L ${pos.x.toFixed(1)} ${pos.y.toFixed(1)} `);
+
     lastPos.current = pos;
   };
 
@@ -57,6 +67,7 @@ function SignatureCanvas({ label, id }) {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    setSvgPath('');
     setHasSignature(false);
   };
 
@@ -77,6 +88,21 @@ function SignatureCanvas({ label, id }) {
         onTouchMove={draw}
         onTouchEnd={stopDraw}
       />
+      {/* Hidden SVG version for PDF captures */}
+      <svg
+        id={`svg-${id}`}
+        viewBox="0 0 300 100"
+        style={{ display: 'none' }}
+      >
+        <path
+          d={svgPath}
+          fill="none"
+          stroke="#2c1a1a"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
       <div className={styles.sigLine} />
       <p className={styles.sigHint}>Signez ici avec votre doigt ou votre souris</p>
       {hasSignature && (
@@ -101,27 +127,21 @@ export default function Certificate() {
     if (!certRef.current) return;
     setExporting(true);
     try {
-      // 1. Prepare Garance's signature as Data URL
-      const garanceCanvas = document.getElementById('sig-garance');
-      const garanceSigBase64 = garanceCanvas ? garanceCanvas.toDataURL('image/png') : null;
-
-      // 2. Prepare Ruben's signature as Data URL (Base64)
-      let rubenSigBase64 = null;
+      // 1. Fetch Ruben's signature as raw SVG source code
+      let rubenSvgSource = null;
       try {
         const resp = await fetch('/signature-ruben.svg');
-        const svgText = await resp.text();
-        // Base64 encoding is more robust across browsers than encodeURIComponent
-        rubenSigBase64 = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgText)));
+        rubenSvgSource = await resp.text();
       } catch (e) {
-        console.warn('Could not pre-fetch signature', e);
+        console.warn('Could not fetch Ruben signature SVG', e);
       }
 
       const canvas = await html2canvas(certRef.current, {
-        scale: 3, // Higher quality
+        scale: 3,
         useCORS: true,
         allowTaint: true,
-        logging: true, // Output debug info for any issues
-        imageTimeout: 0, // No timeout for image loading
+        logging: true,
+        imageTimeout: 0,
         backgroundColor: '#fffdf8',
         windowWidth: 794,
         onclone: (doc) => {
@@ -131,7 +151,6 @@ export default function Certificate() {
             el.style.maxWidth = 'none';
             el.style.transform = 'none';
 
-            // Flex/Grid fixes for cloning
             const sigRow = el.querySelector('[class*="sigRow"]');
             if (sigRow) sigRow.style.gridTemplateColumns = '1fr 1fr';
             const header = el.querySelector('[class*="certHeader"]');
@@ -140,26 +159,30 @@ export default function Certificate() {
               header.style.textAlign = 'left';
             }
 
-            // Fix dynamic Garance signature by replacing canvas with static image
+            // A. Inline Garance's dynamic signature as a real SVG element
             const clonedGaranceCanvas = el.querySelector('#sig-garance');
-            if (clonedGaranceCanvas && garanceSigBase64) {
-              const img = doc.createElement('img');
-              img.src = garanceSigBase64;
-              // Set explicit dimensions to ensure Chrome renders it
-              img.style.width = '300px';
-              img.style.height = '100px';
-              img.style.objectFit = 'contain';
-              img.className = clonedGaranceCanvas.className;
-              clonedGaranceCanvas.parentNode.replaceChild(img, clonedGaranceCanvas);
+            const originalGaranceSvg = document.getElementById('svg-sig-garance');
+            if (clonedGaranceCanvas && originalGaranceSvg) {
+              const svgClone = originalGaranceSvg.cloneNode(true);
+              svgClone.style.display = 'block';
+              svgClone.style.width = '100%';
+              svgClone.style.height = '100%';
+              clonedGaranceCanvas.parentNode.replaceChild(svgClone, clonedGaranceCanvas);
             }
 
-            // Fix Ruben signature by inlining it
-            if (rubenSigBase64) {
-              const rubenSigImg = el.querySelector('img[alt="Signature Ruben"]');
-              if (rubenSigImg) {
-                rubenSigImg.src = rubenSigBase64;
-                rubenSigImg.style.width = '300px';
-                rubenSigImg.style.height = '100px';
+            // B. Inline Ruben's signature by injecting raw SVG code
+            if (rubenSvgSource) {
+              const rubenSigField = el.querySelector('[class*="sigField"]'); // Find the first sigField (usually Ruben's)
+              // Better to find by the image inside
+              const rubenImg = el.querySelector('img[alt="Signature Ruben"]');
+              if (rubenImg) {
+                const container = rubenImg.parentElement;
+                container.innerHTML = rubenSvgSource;
+                const newSvg = container.querySelector('svg');
+                if (newSvg) {
+                  newSvg.style.width = '100%';
+                  newSvg.style.height = '100%';
+                }
               }
             }
           }
