@@ -80,7 +80,7 @@ function SignatureCanvas({ label, id }) {
       <div className={styles.sigLine} />
       <p className={styles.sigHint}>Signez ici avec votre doigt ou votre souris</p>
       {hasSignature && (
-        <button 
+        <button
           data-html2canvas-ignore="true"
           onClick={clearCanvas}
           className={styles.clearBtn}
@@ -127,6 +127,15 @@ export default function Certificate() {
               header.style.flexDirection = 'row';
               header.style.textAlign = 'left';
             }
+
+            // Copy dynamic Garance signature to the clone
+            const originalCanvas = document.getElementById('sig-garance');
+            const clonedCanvas = doc.getElementById('sig-garance');
+            if (originalCanvas && clonedCanvas) {
+              const ctx = clonedCanvas.getContext('2d');
+              ctx.drawImage(originalCanvas, 0, 0);
+            }
+
             if (sigBase64) {
               const sigImg = el.querySelector('img[alt="Signature Ruben"]');
               if (sigImg) sigImg.src = sigBase64;
@@ -141,7 +150,7 @@ export default function Certificate() {
       const imgRatio = canvas.height / canvas.width;
       const imgW = pageW;
       const imgH = imgW * imgRatio;
-      
+
       // Centre verticalement le diplôme
       const yOffset = imgH < pageH ? (pageH - imgH) / 2 : 0;
       pdf.addImage(imgData, 'PNG', 0, yOffset, imgW, Math.min(imgH, pageH));
@@ -240,7 +249,7 @@ export default function Certificate() {
                   <div className={styles.article}>
                     <p className={styles.articleNum}>Article V</p>
                     <p className={styles.articleText}>
-                      Les parties reconnaissent que les petits moments du quotidien 
+                      Les parties reconnaissent que les petits moments du quotidien
                       un ricard partagé, un regard complice, un fou rire inattendu
                       constituent la matière première du bonheur et seront chéris comme tels.
                     </p>
@@ -302,7 +311,7 @@ export default function Certificate() {
                 </div>
 
                 <p className={styles.certFooter}>
-                  Fait avec amour · {TODAY} · Sceau R&G
+                  Fait avec amour · {TODAY} ·
                 </p>
               </div>
             </div>
