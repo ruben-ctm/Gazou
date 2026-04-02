@@ -101,17 +101,27 @@ export default function Certificate() {
     if (!certRef.current) return;
     setExporting(true);
     try {
-      // Pre-fetch SVG signature so we can inline it synchronously in onclone
-      let sigBase64 = null;
+      // 1. Prepare Garance's signature as Data URL
+      const garanceCanvas = document.getElementById('sig-garance');
+      const garanceSigBase64 = garanceCanvas ? garanceCanvas.toDataURL('image/png') : null;
+
+      // 2. Prepare Ruben's signature as Data URL (Base64)
+      let rubenSigBase64 = null;
       try {
         const resp = await fetch('/signature-ruben.svg');
         const svgText = await resp.text();
-        sigBase64 = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText);
-      } catch (e) { console.warn('Could not pre-fetch signature', e); }
+        // Base64 encoding is more robust across browsers than encodeURIComponent
+        rubenSigBase64 = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgText)));
+      } catch (e) {
+        console.warn('Could not pre-fetch signature', e);
+      }
 
       const canvas = await html2canvas(certRef.current, {
-        scale: 2,
+        scale: 3, // Higher quality
         useCORS: true,
+        allowTaint: true,
+        logging: true, // Output debug info for any issues
+        imageTimeout: 0, // No timeout for image loading
         backgroundColor: '#fffdf8',
         windowWidth: 794,
         onclone: (doc) => {
@@ -120,6 +130,8 @@ export default function Certificate() {
             el.style.width = '794px';
             el.style.maxWidth = 'none';
             el.style.transform = 'none';
+
+            // Flex/Grid fixes for cloning
             const sigRow = el.querySelector('[class*="sigRow"]');
             if (sigRow) sigRow.style.gridTemplateColumns = '1fr 1fr';
             const header = el.querySelector('[class*="certHeader"]');
@@ -128,17 +140,27 @@ export default function Certificate() {
               header.style.textAlign = 'left';
             }
 
-            // Copy dynamic Garance signature to the clone
-            const originalCanvas = document.getElementById('sig-garance');
-            const clonedCanvas = doc.getElementById('sig-garance');
-            if (originalCanvas && clonedCanvas) {
-              const ctx = clonedCanvas.getContext('2d');
-              ctx.drawImage(originalCanvas, 0, 0);
+            // Fix dynamic Garance signature by replacing canvas with static image
+            const clonedGaranceCanvas = el.querySelector('#sig-garance');
+            if (clonedGaranceCanvas && garanceSigBase64) {
+              const img = doc.createElement('img');
+              img.src = garanceSigBase64;
+              // Set explicit dimensions to ensure Chrome renders it
+              img.style.width = '300px';
+              img.style.height = '100px';
+              img.style.objectFit = 'contain';
+              img.className = clonedGaranceCanvas.className;
+              clonedGaranceCanvas.parentNode.replaceChild(img, clonedGaranceCanvas);
             }
 
-            if (sigBase64) {
-              const sigImg = el.querySelector('img[alt="Signature Ruben"]');
-              if (sigImg) sigImg.src = sigBase64;
+            // Fix Ruben signature by inlining it
+            if (rubenSigBase64) {
+              const rubenSigImg = el.querySelector('img[alt="Signature Ruben"]');
+              if (rubenSigImg) {
+                rubenSigImg.src = rubenSigBase64;
+                rubenSigImg.style.width = '300px';
+                rubenSigImg.style.height = '100px';
+              }
             }
           }
         }
